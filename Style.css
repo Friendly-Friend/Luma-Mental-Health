@@ -173,36 +173,36 @@ header {
 }
 
 /* --- TWINKLING BACKGROUND STARS ENGINE --- */
+/* --- TWINKLING BACKGROUND STARS ENGINE --- */
 .twinkling-stars {
     position: absolute;
     top: 0;
     left: 0;
     width: 100%;
-    height: 50%; 
+    height: 100%; 
     z-index: 1;  
     pointer-events: none;
     opacity: 0;
     transition: opacity 1s ease;
-    
-    background-image: 
-        radial-gradient(circle, #ffffff 1px, transparent 1.5px),
-        radial-gradient(circle, #ffffff 1.5px, transparent 2px),
-        radial-gradient(circle, rgba(255,255,255,0.7) 1px, transparent 1.5px),
-        radial-gradient(circle, #ffffff 1px, transparent 2px);
-    background-size: 25% 25%, 40% 40%, 33% 33%, 50% 50%;
-    background-position: 0 0, 30px 60px, 130px 40px, 90px 150px;
+}
+
+/* Individual star blueprints dropped by JavaScript */
+.star {
+    position: absolute;
+    background-color: #ffffff;
+    border-radius: 50%;
+    animation: simpleTwinkle ease-in-out infinite alternate;
 }
 
 [data-theme="midnight"] .twinkling-stars {
     opacity: 1;
-    animation: pulseTwinkle 4s ease-in-out infinite alternate;
 }
 
-@keyframes pulseTwinkle {
-    0%, 100% { opacity: 0.5; filter: brightness(0.8); }
-    50% { opacity: 1; filter: brightness(1.3); }
+/* Individual continuous pulsing animation mapping */
+@keyframes simpleTwinkle {
+    0% { opacity: 0.2; transform: scale(0.8); }
+    100% { opacity: 1; transform: scale(1.2); box-shadow: 0 0 4px rgba(255, 255, 255, 0.8); }
 }
-
 /* --- MIDNIGHT SHOOTING STARS ENGINE --- */
 .shooting-stars {
     position: absolute;
