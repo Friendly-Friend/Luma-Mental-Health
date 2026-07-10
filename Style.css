@@ -463,3 +463,50 @@ header {
         font-size: 1rem;
     }
 }
+/* --- CONSTELLATION GRAPHICS ENGINE --- */
+.constellation-canvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 1;
+}
+
+/* Vector path styles for cosmic line links */
+.constellation-canvas line {
+    stroke: rgba(255, 255, 255, 0.02); /* Hidden defaults outside midnight mode */
+    stroke-width: 1;
+    stroke-dasharray: 4;
+    transition: stroke 1.2s ease;
+}
+
+/* Connective lines fade-in sequence when active */
+[data-theme="midnight"] .constellation-canvas line {
+    stroke: rgba(169, 136, 255, 0.25); /* Subtle neon indigo styling link */
+    animation: drawLine 2s forwards ease-out;
+}
+
+/* Prominent custom highlight properties for constellation joints */
+.constellation-star {
+    width: 4px !important;
+    height: 4px !important;
+    background-color: #ffffff;
+    box-shadow: 0 0 8px #ffffff, 0 0 15px rgba(169, 136, 255, 0.6) !important;
+    transform: translate(-2px, -2px); /* Offsets absolute coordinates directly to element center */
+    opacity: 0;
+    animation: anchorReveal 1.5s forwards ease-in-out !important;
+}
+
+/* Keyframe Line reveal drawing mechanics */
+@keyframes drawLine {
+    from { stroke-dashoffset: 50; opacity: 0; }
+    to { stroke-dashoffset: 0; opacity: 1; }
+}
+
+@keyframes anchorReveal {
+    0% { transform: translate(-2px, -2px) scale(0); opacity: 0; }
+    70% { transform: translate(-2px, -2px) scale(1.4); opacity: 0.9; }
+    100% { transform: translate(-2px, -2px) scale(1); opacity: 1; }
+}
