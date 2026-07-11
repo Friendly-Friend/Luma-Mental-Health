@@ -142,7 +142,7 @@ header {
     transition: background 1s ease;
 }
 
-/* --- UNIFIED CELESTIAL SYSTEM (MOON & SHADOW LAYERS) --- */
+/* --- UNIFIED CELESTIAL SYSTEM (FIXED BLEND MODE) --- */
 .celestial-wrapper {
     position: absolute;
     top: 80px;       
@@ -151,11 +151,12 @@ header {
     width: 50px;
     height: 50px;
     border-radius: 50%;
-    overflow: hidden; /* Keeps shadow layer trimmed perfectly to moon bounds */
+    /* Remove overflow: hidden; so our glow transitions look natural */
     transition: all 1.2s cubic-bezier(0.4, 0, 0.2, 1);
     will-change: transform, opacity;
 }
 
+/* Base Full Circular Body Shape */
 .moon-base {
     position: absolute;
     top: 0;
@@ -167,6 +168,7 @@ header {
     transition: all 1.2s ease;
 }
 
+/* Covering Clipping Shadow Element */
 .moon-shadow {
     position: absolute;
     top: 0;
@@ -174,10 +176,10 @@ header {
     width: 100%;
     height: 100%;
     border-radius: 50%;
-    background-color: transparent;
+    background-color: #000000; /* Must be solid black for the blend mode to mask it perfectly */
+    mix-blend-mode: destination-out; /* Crucial step: cuts a hole straight through the moon element */
     transition: all 1s cubic-bezier(0.4, 0, 0.2, 1);
 }
-
 /* Theme Visibility Configurations */
 [data-theme="morning"] .celestial-wrapper,
 [data-theme="rain"] .celestial-wrapper {
@@ -185,21 +187,23 @@ header {
     transform: scale(0.5) translateY(30px);
 }
 
+/* Evening Setup */
 [data-theme="evening"] .moon-base {
     background-color: #fff2e6;
     box-shadow: 0 0 10px rgba(255, 242, 230, 0.3);
 }
 [data-theme="evening"] .moon-shadow {
-    background-color: #1f2a44; /* Matches evening top gradient level */
-    transform: translate(-12px, 8px) scale(0.95); /* Offsets perfectly into a beautiful crescent shape */
+    background-color: #000000; /* Set to black */
+    transform: translate(-12px, 8px) scale(0.95); 
 }
 
+/* Midnight Setup */
 [data-theme="midnight"] .moon-base {
     background-color: #ffffff;
     box-shadow: 0 0 25px 5px rgba(255, 255, 255, 0.4);
 }
 [data-theme="midnight"] .moon-shadow {
-    background-color: #060713; /* Matches midnight deep space dark top level gradient */
+    background-color: #000000; /* Set to black */
 }
 
 /* --- MOON CYCLE PHASES ENGINE --- */
