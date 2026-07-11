@@ -1,8 +1,7 @@
 /* =========================================================
-   Luma Mental Health App - Complete Responsive Stylesheet
+   Luma Mental Health App - Optimized Responsive Stylesheet
    ========================================================= */
 
-/* --- CORE THEMES CONFIGURATION --- */
 :root {
     --sky-gradient: linear-gradient(to bottom, #1f2a44, #4a2e56, #cf6a32, #e67e22);
     --bg-tint: rgba(230, 126, 34, 0.15);
@@ -11,7 +10,6 @@
     --mountain-front: #1f122b;
     --text-color: #ffffff;
     --accent-color: #f39c12;
-    --shadow-fill: #1f2a44; /* Adaptive backdrop alignment variable */
 }
 
 [data-theme="morning"] {
@@ -30,7 +28,6 @@
     --mountain-mid: #0f1015;    
     --mountain-front: #050507;  
     --accent-color: #a988ff;
-    --shadow-fill: #060713; /* Perfectly locks to deep midnight space hue */
 }
 
 [data-theme="rain"] {
@@ -42,7 +39,6 @@
     --accent-color: #aeb6bf;
 }
 
-/* --- Global Resets --- */
 * {
     margin: 0;
     padding: 0;
@@ -54,11 +50,10 @@ body {
     background-color: var(--mountain-front);
     color: var(--text-color);
     overflow-x: hidden;
-    min-height: 2000px;
-    transition: background-color 1s ease;
+    min-height: 1800px;
+    transition: background-color 0.8s ease;
 }
 
-/* --- Fixed Minimalist Header Navigation --- */
 header {
     position: fixed;
     top: 0;
@@ -69,7 +64,6 @@ header {
     justify-content: space-between;
     align-items: flex-start;
     z-index: 1000;
-    background: transparent;
     pointer-events: none;
 }
 
@@ -83,9 +77,7 @@ header {
     pointer-events: auto;
 }
 
-.logo:hover {
-    opacity: 0.9;
-}
+.logo:hover { opacity: 0.9; }
 
 .theme-controls {
     display: flex;
@@ -106,31 +98,20 @@ header {
     justify-content: center;
     align-items: center;
     opacity: 0.4;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-.theme-btn svg {
-    transition: transform 0.3s ease;
+    transition: all 0.3s ease;
 }
 
 .theme-btn:hover {
     opacity: 0.8;
     background: rgba(255, 255, 255, 0.15);
-    transform: scale(1.05);
 }
 
 .theme-btn.active {
     opacity: 1;
     background: rgba(255, 255, 255, 0.25);
-    border-color: rgba(255, 255, 255, 0.6);
-    box-shadow: 0 0 15px rgba(255, 255, 255, 0.2);
+    border-color: rgba(255, 255, 255, 0.5);
 }
 
-.theme-btn.active svg {
-    transform: scale(1.1);
-}
-
-/* --- Parallax Canvas Base Container --- */
 .parallax-container {
     position: relative;
     width: 100%;
@@ -140,66 +121,38 @@ header {
     justify-content: center;
     align-items: center;
     background: var(--sky-gradient);
-    transition: background 1s ease;
+    transition: background 0.8s ease;
 }
 
-/* --- FIXED HIGH DEFINITION VECTOR CELESTIAL SYSTEM --- */
-.celestial-wrapper {
+/* --- OPTIMIZED MOON CLASS --- */
+.moon {
     position: absolute;
-    top: 80px;       
+    top: 90px;       
     right: 18%;
     z-index: 2;      
-    width: 55px;
-    height: 55px;
-    transition: opacity 0.8s cubic-bezier(0.4, 0, 0.2, 1), transform 1s cubic-bezier(0.4, 0, 0.2, 1);
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background-color: #fff2e6;
+    box-shadow: 0 0 15px rgba(255, 242, 230, 0.4);
+    transition: transform 0.8s cubic-bezier(0.2, 0.8, 0.2, 1), opacity 0.6s ease, background-color 0.8s ease, box-shadow 0.8s ease;
     will-change: transform, opacity;
 }
 
-.moon-svg {
-    width: 100%;
-    height: 100%;
-    overflow: visible;
+/* Visibility states across scene types */
+[data-theme="midnight"] .moon {
+    background-color: #ffffff;
+    box-shadow: 0 0 25px 6px rgba(255, 255, 255, 0.5);
+    opacity: 1;
 }
 
-/* Base Full Moon circular core fill styles */
-.moon-body {
-    fill: #fff2e6;
-    transition: fill 1s ease, filter 1s ease;
-}
-
-/* Vector geometry shadow slice configuration styling */
-.moon-shadow-mask {
-    fill: var(--shadow-fill);
-    transition: fill 1s ease, d 0.8s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-/* Visibility State Rules: Hides moon cleanly during daytime or rain transitions */
-[data-theme="morning"] .celestial-wrapper,
-[data-theme="rain"] .celestial-wrapper {
+[data-theme="morning"] .moon,
+[data-theme="rain"] .moon {
     opacity: 0;
-    transform: scale(0.3) translateY(40px) !important;
-    pointer-events: none;
+    transform: scale(0.4) translate3d(0, 30px, 0) !important;
 }
 
-/* Evening Visibility Settings */
-[data-theme="evening"] .celestial-wrapper {
-    opacity: 1;
-}
-[data-theme="evening"] .moon-body {
-    fill: #fff2e6;
-    filter: drop-shadow(0 0 6px rgba(255, 242, 230, 0.4));
-}
-
-/* Midnight Visibility Settings */
-[data-theme="midnight"] .celestial-wrapper {
-    opacity: 1;
-}
-[data-theme="midnight"] .moon-body {
-    fill: #ffffff;
-    filter: drop-shadow(0 0 15px rgba(255, 255, 255, 0.6));
-}
-
-/* --- TWINKLING BACKGROUND STARS ENGINE --- */
+/* --- STARLIGHT FABRIC --- */
 .twinkling-stars {
     position: absolute;
     top: 0;
@@ -209,82 +162,24 @@ header {
     z-index: 1;  
     pointer-events: none;
     opacity: 0;
-    transition: opacity 1s ease;
+    transition: opacity 0.8s ease;
 }
 
 .star {
     position: absolute;
     background-color: #ffffff;
     border-radius: 50%;
-    animation: simpleTwinkle ease-in-out infinite alternate;
+    animation: pulseTwinkle 2.5s ease-in-out infinite alternate;
 }
 
-[data-theme="midnight"] .twinkling-stars {
-    opacity: 1;
-}
+[data-theme="midnight"] .twinkling-stars { opacity: 1; }
 
-@keyframes simpleTwinkle {
+@keyframes pulseTwinkle {
     0% { opacity: 0.2; transform: scale(0.8); }
-    100% { opacity: 1; transform: scale(1.2); box-shadow: 0 0 4px rgba(255, 255, 255, 0.8); }
+    100% { opacity: 1; transform: scale(1.1); }
 }
 
-/* --- MIDNIGHT SHOOTING STARS ENGINE --- */
-.shooting-stars {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    z-index: 2; 
-    pointer-events: none;
-    display: none; 
-}
-
-[data-theme="midnight"] .shooting-stars {
-    display: block;
-}
-
-.shooting-stars span {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    width: 4px;
-    height: 4px;
-    background: #fff;
-    border-radius: 50%;
-    box-shadow: 0 0 0 4px rgba(255,255,255,0.1), 0 0 0 8px rgba(255,255,255,0.1), 0 0 20px rgba(255,255,255,1);
-    animation: animateStar 3s linear infinite;
-    opacity: 0;
-}
-
-.shooting-stars span::before {
-    content: '';
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    width: 300px;
-    height: 1px;
-    background: linear-gradient(90deg, #fff, transparent);
-}
-
-@keyframes animateStar {
-    0% { transform: rotate(315deg) translateX(0); opacity: 1; }
-    70% { opacity: 1; }
-    100% { transform: rotate(315deg) translateX(-1000px); opacity: 0; }
-}
-
-.shooting-stars span:nth-child(1) { top: 0; right: 0; left: initial; animation-delay: 0s; animation-duration: 1s; }
-.shooting-stars span:nth-child(2) { top: 0; right: 80px; left: initial; animation-delay: 0.2s; animation-duration: 3s; }
-.shooting-stars span:nth-child(3) { top: 80px; right: 0px; left: initial; animation-delay: 0.4s; animation-duration: 2s; }
-.shooting-stars span:nth-child(4) { top: 0; right: 180px; left: initial; animation-delay: 0.6s; animation-duration: 1.5s; }
-.shooting-stars span:nth-child(5) { top: 0; right: 400px; left: initial; animation-delay: 0.8s; animation-duration: 2.5s; }
-.shooting-stars span:nth-child(6) { top: 0; right: 600px; left: initial; animation-delay: 1s; animation-duration: 3s; }
-.shooting-stars span:nth-child(7) { top: 300px; right: 0px; left: initial; animation-delay: 1.2s; animation-duration: 1.75s; }
-.shooting-stars span:nth-child(8) { top: 0px; right: 700px; left: initial; animation-delay: 1.4s; animation-duration: 1.25s; }
-.shooting-stars span:nth-child(9) { top: 0px; right: 1000px; left: initial; animation-delay: 0.75s; animation-duration: 2.25s; }
-.shooting-stars span:nth-child(10) { top: 0px; right: 450px; left: initial; animation-delay: 2.75s; animation-duration: 2.75s; }
-
-/* --- Parallax Scenery Layers --- */
+/* --- OPTIMIZED LAYER HARNESS (GPU FORCE) --- */
 .parallax-layer {
     position: absolute;
     bottom: -2px;
@@ -295,7 +190,8 @@ header {
     background-position: bottom center;
     background-size: cover;
     will-change: transform;
-    transition: background-image 1s ease;
+    backface-visibility: hidden; /* Bypasses mobile layout invalidation paint routines */
+    transition: background-image 0.8s ease;
 }
 
 #layer-sky { z-index: 1; }
@@ -324,8 +220,9 @@ header {
     text-align: center;
     font-size: 4rem;
     letter-spacing: 4px;
-    text-shadow: 0 4px 20px rgba(0,0,0,0.6);
-    transform: translateY(-50px);
+    text-shadow: 0 4px 15px rgba(0,0,0,0.5);
+    transform: translate3d(0, -50px, 0);
+    will-change: transform;
 }
 
 #layer-mountain-front {
@@ -337,7 +234,7 @@ header {
 [data-theme="morning"] #layer-mountain-front { background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 600" preserveAspectRatio="none"><path fill="%23233d4d" d="M0,520 L180,380 L450,540 L800,320 L1150,510 L1440,360 L1440,600 L0,600 Z"></path></svg>'); }
 [data-theme="rain"] #layer-mountain-front { background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 600" preserveAspectRatio="none"><path fill="%2317202a" d="M0,520 L180,380 L450,540 L800,320 L1150,510 L1440,360 L1440,600 L0,600 Z"></path></svg>'); }
 
-/* --- Wind-Swept Storm Framework --- */
+/* --- COMPACT WEATHER CONTROLLER --- */
 .rain-container {
     position: absolute;
     top: 0;
@@ -347,185 +244,129 @@ header {
     z-index: 7;
     pointer-events: none;
     opacity: 0;
-    transition: opacity 0.6s ease;
+    transition: opacity 0.5s ease;
 }
 
-[data-theme="rain"] .rain-container {
-    opacity: 1;
-}
+[data-theme="rain"] .rain-container { opacity: 1; }
 
 .drop {
     position: absolute;
-    background: linear-gradient(transparent, rgba(255, 255, 255, 0.4));
+    background: linear-gradient(transparent, rgba(255, 255, 255, 0.35));
     width: 1.5px;
-    height: 45px;
-    transform: rotate(20deg);
-    animation: diagonalFall linear infinite;
+    height: 40px;
+    transform: rotate(15deg);
+    animation: fall linear infinite;
 }
 
-@keyframes diagonalFall {
-    0% { transform: translateY(-60px) translateX(0px) rotate(20deg); }
-    100% { transform: translateY(105vh) translateX(-200px) rotate(20deg); }
+@keyframes fall {
+    0% { transform: translate3d(0, -50px, 0) rotate(15deg); }
+    100% { transform: translate3d(-150px, 105vh, 0) rotate(15deg); }
 }
 
-/* --- Content Information Blocks --- */
-.app-content-section {
-    background-color: var(--mountain-front);
-    padding: 100px 40px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    position: relative;
-    z-index: 10;
-    transition: background-color 1s ease;
-}
-
-.container {
-    max-width: 1000px;
-    text-align: center;
-}
-
-.container h2 {
-    font-size: 2.5rem;
-    margin-bottom: 20px;
-    color: var(--accent-color);
-    transition: color 1s ease;
-}
-
-.container p {
-    font-size: 1.15rem;
-    line-height: 1.8;
-    color: rgba(255,255,255,0.8);
-    margin-bottom: 40px;
-}
-
-.placeholder-box {
-    width: 100%;
-    height: 400px;
-    border: 2px dashed rgba(255,255,255,0.2);
-    border-radius: 12px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    color: rgba(255,255,255,0.4);
-    font-size: 1.2rem;
-    background: var(--bg-tint);
-    transition: background 1s ease;
-}
-
-/* --- CONSTELLATION GRAPHICS ENGINE --- */
-.constellation-canvas {
+/* --- MIDNIGHT SHOOTING STARS ENGINE --- */
+.shooting-stars {
     position: absolute;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
+    z-index: 2; 
     pointer-events: none;
-    z-index: 1;
+    display: none; 
 }
 
-.constellation-canvas line {
-    stroke: rgba(255, 255, 255, 0.02);
-    stroke-width: 1;
-    stroke-dasharray: 4;
-    transition: stroke 1.2s ease;
-}
+[data-theme="midnight"] .shooting-stars { display: block; }
 
-[data-theme="midnight"] .constellation-canvas line {
-    stroke: rgba(169, 136, 255, 0.25);
-    animation: drawLine 2s forwards ease-out;
-}
-
-.constellation-star {
-    width: 4px !important;
-    height: 4px !important;
-    background-color: #ffffff;
-    box-shadow: 0 0 8px #ffffff, 0 0 15px rgba(169, 136, 255, 0.6) !important;
-    transform: translate(-2px, -2px);
+.shooting-stars span {
+    position: absolute;
+    top: 20%;
+    right: 10%;
+    width: 3px;
+    height: 3px;
+    background: #fff;
+    border-radius: 50%;
+    box-shadow: 0 0 10px #fff;
+    animation: sweep 4s linear infinite;
     opacity: 0;
-    animation: anchorReveal 1.5s forwards ease-in-out !important;
 }
 
-@keyframes drawLine {
-    from { stroke-dashoffset: 50; opacity: 0; }
-    to { stroke-dashoffset: 0; opacity: 1; }
+@keyframes sweep {
+    0% { transform: rotate(315deg) translate3d(0, 0, 0); opacity: 1; }
+    15% { transform: rotate(315deg) translate3d(-400px, 0, 0); opacity: 0; }
+    100% { transform: rotate(315deg) translate3d(-400px, 0, 0); opacity: 0; }
 }
 
-@keyframes anchorReveal {
-    0% { transform: translate(-2px, -2px) scale(0); opacity: 0; }
-    70% { transform: translate(-2px, -2px) scale(1.4); opacity: 0.9; }
-    100% { transform: translate(-2px, -2px) scale(1); opacity: 1; }
+.shooting-stars span:nth-child(1) { top: 10%; right: 15%; animation-delay: 0s; animation-duration: 2s; }
+.shooting-stars span:nth-child(2) { top: 5%; right: 40%; animation-delay: 1.2s; animation-duration: 3.5s; }
+.shooting-stars span:nth-child(3) { top: 25%; right: 5%; animation-delay: 0.5s; animation-duration: 2.8s; }
+.shooting-stars span:nth-child(4) { top: 15%; right: 65%; animation-delay: 2.5s; animation-duration: 4s; }
+.shooting-stars span:nth-child(5) { top: 30%; right: 50%; animation-delay: 1.8s; animation-duration: 3.2s; }
+
+/* --- CONTENT AND LAYOUT BLOCK --- */
+.app-content-section {
+    background-color: var(--mountain-front);
+    padding: 90px 30px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+    z-index: 10;
+    transition: background-color 0.8s ease;
 }
 
-/* =========================================================
-   MOBILE RESPONSIVE MEDIA QUERIES (Screens under 768px)
-   ========================================================= */
+.container {
+    max-width: 900px;
+    text-align: center;
+}
+
+.container h2 {
+    font-size: 2.2rem;
+    margin-bottom: 20px;
+    color: var(--accent-color);
+    transition: color 0.8s ease;
+}
+
+.container p {
+    font-size: 1.1rem;
+    line-height: 1.7;
+    color: rgba(255,255,255,0.75);
+    margin-bottom: 35px;
+}
+
+.placeholder-box {
+    width: 100%;
+    height: 350px;
+    border: 2px dashed rgba(255,255,255,0.15);
+    border-radius: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: rgba(255,255,255,0.35);
+    font-size: 1.1rem;
+    background: var(--bg-tint);
+    transition: background 0.8s ease;
+}
+
+/* --- RESPONSIVE STRUCTURAL OVERRIDES --- */
 @media (max-width: 768px) {
-    header {
-        padding: 20px;
-        flex-direction: row; 
-        justify-content: space-between;
-    }
+    header { padding: 20px; }
+    .logo { font-size: 1rem; }
+    .theme-btn { width: 38px; height: 38px; }
+    .parallax-container { height: 55vh; }
     
-    .logo {
-        font-size: 1rem;
-        margin-top: 10px;
-    }
-
-    .theme-controls {
-        gap: 8px;
-    }
-
-    .theme-btn {
-        width: 36px;
-        height: 36px;
-    }
-    
-    .theme-btn svg {
-        width: 16px;
-        height: 16px;
-    }
-
-    .parallax-container {
-        height: 60vh; 
-    }
-
-    .parallax-layer {
-        height: 100%;
-        background-size: auto 100%; 
-        background-position: bottom center;
-    }
-
     .hero-title {
         font-size: 2.2rem;
-        letter-spacing: 2px;
-        transform: translateY(-20px);
-        padding: 0 15px;
-        width: 100%;
+        transform: translate3d(0, -20px, 0);
     }
 
-    .celestial-wrapper {
-        top: 80px; 
-        right: 25%; 
-        width: 35px;
-        height: 35px;
+    .moon {
+        top: 70px;
+        right: 22%;
+        width: 38px;
+        height: 38px;
     }
     
-    .app-content-section {
-        padding: 60px 20px;
-    }
-
-    .container h2 {
-        font-size: 1.8rem;
-    }
-
-    .container p {
-        font-size: 1rem;
-        line-height: 1.6;
-    }
-
-    .placeholder-box {
-        height: 300px;
-        font-size: 1rem;
-    }
+    .app-content-section { padding: 50px 20px; }
+    .container h2 { font-size: 1.6rem; }
+    .placeholder-box { height: 260px; }
 }
