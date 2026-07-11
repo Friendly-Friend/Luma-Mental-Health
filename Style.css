@@ -11,6 +11,7 @@
     --mountain-front: #1f122b;
     --text-color: #ffffff;
     --accent-color: #f39c12;
+    --shadow-fill: #1f2a44; /* Adaptive backdrop alignment variable */
 }
 
 [data-theme="morning"] {
@@ -29,6 +30,7 @@
     --mountain-mid: #0f1015;    
     --mountain-front: #050507;  
     --accent-color: #a988ff;
+    --shadow-fill: #060713; /* Perfectly locks to deep midnight space hue */
 }
 
 [data-theme="rain"] {
@@ -141,75 +143,60 @@ header {
     transition: background 1s ease;
 }
 
-/* --- FIX: CLIP-PATH CELESTIAL SYSTEM --- */
+/* --- FIXED HIGH DEFINITION VECTOR CELESTIAL SYSTEM --- */
 .celestial-wrapper {
     position: absolute;
     top: 80px;       
     right: 18%;
     z-index: 2;      
-    width: 50px;
-    height: 50px;
-    border-radius: 50%;
-    transition: all 1.2s cubic-bezier(0.4, 0, 0.2, 1);
-    will-change: transform, opacity, clip-path;
+    width: 55px;
+    height: 55px;
+    transition: opacity 0.8s cubic-bezier(0.4, 0, 0.2, 1), transform 1s cubic-bezier(0.4, 0, 0.2, 1);
+    will-change: transform, opacity;
 }
 
-.moon-base {
-    position: absolute;
-    top: 0;
-    left: 0;
+.moon-svg {
     width: 100%;
     height: 100%;
-    border-radius: 50%;
-    background-color: #fff2e6;
-    transition: all 1.2s ease;
+    overflow: visible;
 }
 
-/* Hide shadow layer entirely to avoid solid colored shapes */
-.moon-shadow {
-    display: none;
+/* Base Full Moon circular core fill styles */
+.moon-body {
+    fill: #fff2e6;
+    transition: fill 1s ease, filter 1s ease;
 }
 
-/* Theme Visibility Configurations */
+/* Vector geometry shadow slice configuration styling */
+.moon-shadow-mask {
+    fill: var(--shadow-fill);
+    transition: fill 1s ease, d 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Visibility State Rules: Hides moon cleanly during daytime or rain transitions */
 [data-theme="morning"] .celestial-wrapper,
 [data-theme="rain"] .celestial-wrapper {
     opacity: 0;
-    transform: scale(0.5) translateY(30px);
+    transform: scale(0.3) translateY(40px) !important;
+    pointer-events: none;
 }
 
+/* Evening Visibility Settings */
 [data-theme="evening"] .celestial-wrapper {
-    /* Hard-cut crescent mask path */
-    clip-path: path('M 50 0 A 25 25 0 1 1 15 41 A 22 22 0 1 0 50 0 Z');
+    opacity: 1;
 }
-[data-theme="evening"] .moon-base {
-    background-color: #fff2e6;
-    box-shadow: 0 0 10px rgba(255, 242, 230, 0.3);
-}
-
-[data-theme="midnight"] .moon-base {
-    background-color: #ffffff;
-    box-shadow: 0 0 25px 5px rgba(255, 255, 255, 0.4);
+[data-theme="evening"] .moon-body {
+    fill: #fff2e6;
+    filter: drop-shadow(0 0 6px rgba(255, 242, 230, 0.4));
 }
 
-/* --- LUNAR MASKING PHASE CONTROLS --- */
-[data-theme="midnight"] .celestial-wrapper[data-phase="crescent"] {
-    clip-path: path('M 50 0 A 25 25 0 1 1 15 41 A 22 22 0 1 0 50 0 Z');
+/* Midnight Visibility Settings */
+[data-theme="midnight"] .celestial-wrapper {
+    opacity: 1;
 }
-
-[data-theme="midnight"] .celestial-wrapper[data-phase="half"] {
-    clip-path: path('M 25 0 A 25 25 0 0 1 25 50 Z');
-}
-
-[data-theme="midnight"] .celestial-wrapper[data-phase="gibbous"] {
-    clip-path: path('M 50 0 A 25 25 0 1 1 50 50 A 13 25 0 0 1 50 0 Z');
-}
-
-[data-theme="midnight"] .celestial-wrapper[data-phase="full"] {
-    clip-path: path('M 25 0 A 25 25 0 1 1 24.9 0 Z'); /* Unmasked complete circle */
-}
-
-[data-theme="midnight"] .celestial-wrapper[data-phase="new"] {
-    clip-path: path('M 0 0 L 0 0 Z'); /* Completely hidden geometry */
+[data-theme="midnight"] .moon-body {
+    fill: #ffffff;
+    filter: drop-shadow(0 0 15px rgba(255, 255, 255, 0.6));
 }
 
 /* --- TWINKLING BACKGROUND STARS ENGINE --- */
