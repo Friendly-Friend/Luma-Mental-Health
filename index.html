@@ -11,19 +11,15 @@
     <header>
         <div class="logo">Luma Mental Health</div>
         <div class="theme-controls">
-            <!-- Morning (Sun Icon) -->
             <button class="theme-btn" onclick="setTheme('morning', this)" title="Morning">
                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"></path></svg>
             </button>
-            <!-- Evening (Sunset Icon) -->
             <button class="theme-btn active" onclick="setTheme('evening', this)" title="Evening">
                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 18a5 5 0 0 0-10 0M12 2v4M5.22 10.22l2.83 2.83M18.78 10.22l-2.83 2.83M2 22h20"></path></svg>
             </button>
-            <!-- Midnight (Moon Icon) -->
-            <button class="theme-btn" onclick="setTheme('midnight', this)" title="Midnight">
+            <button class="theme-btn" onclick="setTheme('midnight', this)" id="midnight-btn" title="Midnight Cycle">
                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"></path></svg>
             </button>
-            <!-- Rain (Cloud Rain Icon) -->
             <button class="theme-btn" onclick="setTheme('rain', this)" title="Rain">
                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 14.899A7 7 0 1 1 15.71 8h1.79a4.5 4.5 0 0 1 2.5 8.242M16 14v6M8 14v6M12 16v6"></path></svg>
             </button>
@@ -35,16 +31,15 @@
         
         <div class="parallax-layer" id="layer-sky"></div>
         
-        <!-- Celestial Moon Structure -->
-        <div class="celestial-body" id="moon-element"></div>
+        <div class="celestial-wrapper" id="moon-element" data-phase="crescent">
+            <div class="moon-base"></div>
+            <div class="moon-shadow"></div>
+        </div>
         
-        <!-- Dynamic Stars Framework -->
         <div class="twinkling-stars" id="stars-box">
-            <!-- SVG Overlay Canvas for Constellation Lines -->
             <svg class="constellation-canvas" id="constellation-svg"></svg>
         </div>
         
-        <!-- Midnight Shooting Stars Engine -->
         <div class="shooting-stars">
             <span></span><span></span><span></span><span></span><span></span>
             <span></span><span></span><span></span><span></span><span></span>
@@ -59,7 +54,7 @@
     <section class="app-content-section">
         <div class="container">
             <h2>Your Sanctuary Awaits</h2>
-            <p>The system now controls an intelligent celestial engine. Toggle to Midnight to see shooting stars and twinkling constellations across the deep space layout.</p>
+            <p>The system now controls an intelligent celestial engine. Toggle to Midnight repeatedly to cycle through the lunar system and view changing constellations across deep space.</p>
             <div class="placeholder-box">
                 [ Main Mental Health App Module Interface / Mockup Placement Area ]
             </div>
@@ -83,6 +78,7 @@
         // 2. Dynamic Randomized Stars & Constellation Engine
         function generateRandomStars() {
             const starsBox = document.getElementById('stars-box');
+            starsBox.querySelectorAll('.star').forEach(s => s.remove()); // Clear old regular stars if re-called
             const starCount = 120; 
 
             for (let i = 0; i < starCount; i++) {
@@ -100,41 +96,31 @@
                 
                 starsBox.appendChild(star);
             }
-
-            // Trigger the small chance constellation sequence
             spawnRareConstellation();
         }
 
         function spawnRareConstellation() {
-            // Change 0.2 to adjust probability (0.2 = 20% chance on load/refresh)
+            const svgCanvas = document.getElementById('constellation-svg');
+            svgCanvas.innerHTML = ''; // Wipe clean previous traces
+            
             const spawnChance = 0.2; 
             if (Math.random() > spawnChance) return; 
 
             const starsBox = document.getElementById('stars-box');
-            const svgCanvas = document.getElementById('constellation-svg');
             
-            // Big Dipper structural offset blueprint mapping
             const bigDipperNodes = [
-                { x: 0,   y: 50 },  // Alkaid
-                { x: 45,  y: 40 },  // Mizar
-                { x: 85,  y: 45 },  // Alioth
-                { x: 130, y: 75 },  // Megrez
-                { x: 135, y: 120 }, // Phad
-                { x: 195, y: 125 }, // Merak
-                { x: 210, y: 65 },  // Dubhe
-                { x: 130, y: 75 }   // Loop back closure line to Megrez
+                { x: 0,   y: 50 },  { x: 45,  y: 40 },  { x: 85,  y: 45 },  
+                { x: 130, y: 75 },  { x: 135, y: 120 }, { x: 195, y: 125 }, 
+                { x: 210, y: 65 },  { x: 130, y: 75 }   
             ];
 
-            // Random master anchor origin point within safe boundary zones
-            const startX = 15 + (Math.random() * 55); // Viewport % scale
-            const startY = 10 + (Math.random() * 25); // Viewport % scale
+            const startX = 15 + (Math.random() * 55); 
+            const startY = 10 + (Math.random() * 25); 
 
-            // Wait briefly for container sizing to register completely
             setTimeout(() => {
                 const baseWidth = starsBox.clientWidth;
                 const baseHeight = starsBox.clientHeight;
                 
-                // Translate initial percentages directly to pixel anchors
                 const originPxX = (startX / 100) * baseWidth;
                 const originPxY = (startY / 100) * baseHeight;
                 
@@ -143,30 +129,22 @@
                     y: originPxY + node.y
                 }));
 
-                // Drop constellation structural nodes onto the stage
                 computedPoints.forEach((pt, index) => {
-                    // Skip the repeating point item used strictly to close the line geometry
                     if(index === 7) return; 
-
                     const cStar = document.createElement('div');
                     cStar.classList.add('star', 'constellation-star');
                     cStar.style.left = `${pt.x}px`;
                     cStar.style.top = `${pt.y}px`;
-                    
-                    // Add staggered fade-in animations for the star nodes
                     cStar.style.animationDelay = `${0.5 + (index * 0.2)}s`;
                     starsBox.appendChild(cStar);
                 });
 
-                // Generate vector tracing lines connecting the map array
                 for (let i = 0; i < computedPoints.length - 1; i++) {
                     const line = document.createElementNS("http://www.w3.org/2000/svg", "line");
                     line.setAttribute("x1", computedPoints[i].x);
                     line.setAttribute("y1", computedPoints[i].y);
                     line.setAttribute("x2", computedPoints[i+1].x);
                     line.setAttribute("y2", computedPoints[i+1].y);
-                    
-                    // Set gradual sequence lines drawing intervals
                     line.style.animationDelay = `${1.5 + (i * 0.25)}s`;
                     svgCanvas.appendChild(line);
                 }
@@ -191,9 +169,36 @@
             moonElement.style.transform = `translateY(${scrollPos * 0.65}px)`;
         });
 
-        // 4. Global State Theme Machine
+        // 4. Moon Cycle State Array Tracker
+        const moonPhases = ['crescent', 'half', 'gibbous', 'full', 'new'];
+        let currentPhaseIndex = 0; // Starts at crescent
+
+        // 5. Global State Theme Machine
         function setTheme(themeName, element) {
+            const moonEl = document.getElementById('moon-element');
+            const currentTheme = document.documentElement.getAttribute('data-theme');
+
+            // If clicking midnight button while ALREADY on midnight, cycle the moon phase!
+            if (themeName === 'midnight' && currentTheme === 'midnight') {
+                currentPhaseIndex = (currentPhaseIndex + 1) % moonPhases.length;
+                moonEl.setAttribute('data-phase', moonPhases[currentPhaseIndex]);
+                
+                // Regenerate sky patterns to add life to phase shifting
+                generateRandomStars();
+                return;
+            }
+
+            // Normal theme shifting rules
             document.documentElement.setAttribute('data-theme', themeName);
+            
+            if (themeName === 'midnight') {
+                // Default fallback configuration when entering fresh from another theme
+                moonEl.setAttribute('data-phase', moonPhases[currentPhaseIndex]);
+            } else if (themeName === 'evening') {
+                // Force custom crescent positioning specifically back for evening values
+                moonEl.setAttribute('data-phase', 'crescent');
+            }
+
             const buttons = document.querySelectorAll('.theme-btn');
             buttons.forEach(btn => btn.classList.remove('active'));
             element.classList.add('active');
