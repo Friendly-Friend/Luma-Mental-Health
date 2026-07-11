@@ -263,7 +263,7 @@ header {
     100% { transform: translate3d(-150px, 105vh, 0) rotate(15deg); }
 }
 
-/* --- MIDNIGHT SHOOTING STARS ENGINE --- */
+/* --- RARE SHOOTING STARS ENGINE WITH THIN TRAILS --- */
 .shooting-stars {
     position: absolute;
     top: 0;
@@ -279,28 +279,39 @@ header {
 
 .shooting-stars span {
     position: absolute;
-    top: 20%;
-    right: 10%;
     width: 3px;
     height: 3px;
-    background: #fff;
+    background: #ffffff;
     border-radius: 50%;
-    box-shadow: 0 0 10px #fff;
-    animation: sweep 4s linear infinite;
+    box-shadow: 0 0 8px 2px #ffffff;
+    animation: sweepTrail 12s linear infinite; /* Increased total duration to create large gaps of empty space */
     opacity: 0;
 }
 
-@keyframes sweep {
-    0% { transform: rotate(315deg) translate3d(0, 0, 0); opacity: 1; }
-    15% { transform: rotate(315deg) translate3d(-400px, 0, 0); opacity: 0; }
-    100% { transform: rotate(315deg) translate3d(-400px, 0, 0); opacity: 0; }
+/* Tapering thin tail trail added via hardware-accelerated pseudo element */
+.shooting-stars span::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 140px; /* Length of the tail */
+    height: 1px;  /* Hairline trail thickness */
+    background: linear-gradient(90deg, rgba(255, 255, 255, 0.7), transparent);
 }
 
-.shooting-stars span:nth-child(1) { top: 10%; right: 15%; animation-delay: 0s; animation-duration: 2s; }
-.shooting-stars span:nth-child(2) { top: 5%; right: 40%; animation-delay: 1.2s; animation-duration: 3.5s; }
-.shooting-stars span:nth-child(3) { top: 25%; right: 5%; animation-delay: 0.5s; animation-duration: 2.8s; }
-.shooting-stars span:nth-child(4) { top: 15%; right: 65%; animation-delay: 2.5s; animation-duration: 4s; }
-.shooting-stars span:nth-child(5) { top: 30%; right: 50%; animation-delay: 1.8s; animation-duration: 3.2s; }
+@keyframes sweepTrail {
+    0% { transform: rotate(315deg) translate3d(200px, 0, 0); opacity: 0; }
+    2% { opacity: 1; } /* Rapidly lights up */
+    8% { transform: rotate(315deg) translate3d(-800px, 0, 0); opacity: 0; } /* Fast traversal */
+    100% { transform: rotate(315deg) translate3d(-800px, 0, 0); opacity: 0; } /* Long resting cooldown loop */
+}
+
+/* Spatially isolated trajectories with deeply padded delay loops for realistic rarity */
+.shooting-stars span:nth-child(1) { top: 12%; right: 10%; animation-delay: 0s; }
+.shooting-stars span:nth-child(2) { top: 7%; right: 35%; animation-delay: 4.5s; }
+.shooting-stars span:nth-child(3) { top: 22%; right: 18%; animation-delay: 2.1s; }
+.shooting-stars span:nth-child(4) { top: 15%; right: 60%; animation-delay: 8.2s; }
+.shooting-stars span:nth-child(5) { top: 28%; right: 45%; animation-delay: 6.0s; }
 
 /* --- CONTENT AND LAYOUT BLOCK --- */
 .app-content-section {
