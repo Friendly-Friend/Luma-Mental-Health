@@ -68,7 +68,7 @@ header {
     align-items: flex-start;
     z-index: 1000;
     background: transparent;
-    pointer-events: none; /* Allows scrolling underneath header space */
+    pointer-events: none;
 }
 
 .logo {
@@ -76,7 +76,7 @@ header {
     font-weight: 600;
     letter-spacing: 1px;
     color: var(--text-color);
-    opacity: 0.5; /* Blends cleanly into the sky background environment */
+    opacity: 0.5;
     transition: opacity 0.3s ease;
     pointer-events: auto;
 }
@@ -85,21 +85,20 @@ header {
     opacity: 0.9;
 }
 
-/* --- Vertical Right-Side Floating Navigation Container --- */
 .theme-controls {
     display: flex;
-    flex-direction: column; /* Stack icons one below the other */
+    flex-direction: column;
     gap: 12px;
-    pointer-events: auto; /* Restores button clickability */
+    pointer-events: auto;
 }
 
 .theme-btn {
     background: rgba(255, 255, 255, 0.05);
     border: 1px solid rgba(255, 255, 255, 0.1);
     color: var(--text-color);
-    width: 42px;  /* Square dimensions for perfect icon framing */
+    width: 42px;  
     height: 42px;
-    border-radius: 50%; /* Smooth circular buttons */
+    border-radius: 50%;
     cursor: pointer;
     display: flex;
     justify-content: center;
@@ -142,7 +141,7 @@ header {
     transition: background 1s ease;
 }
 
-/* --- UNIFIED CELESTIAL SYSTEM (FIXED BLEND MODE) --- */
+/* --- FIX: CLIP-PATH CELESTIAL SYSTEM --- */
 .celestial-wrapper {
     position: absolute;
     top: 80px;       
@@ -151,12 +150,10 @@ header {
     width: 50px;
     height: 50px;
     border-radius: 50%;
-    /* Remove overflow: hidden; so our glow transitions look natural */
     transition: all 1.2s cubic-bezier(0.4, 0, 0.2, 1);
-    will-change: transform, opacity;
+    will-change: transform, opacity, clip-path;
 }
 
-/* Base Full Circular Body Shape */
 .moon-base {
     position: absolute;
     top: 0;
@@ -168,18 +165,11 @@ header {
     transition: all 1.2s ease;
 }
 
-/* Covering Clipping Shadow Element */
+/* Hide shadow layer entirely to avoid solid colored shapes */
 .moon-shadow {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    border-radius: 50%;
-    background-color: #000000; /* Must be solid black for the blend mode to mask it perfectly */
-    mix-blend-mode: destination-out; /* Crucial step: cuts a hole straight through the moon element */
-    transition: all 1s cubic-bezier(0.4, 0, 0.2, 1);
+    display: none;
 }
+
 /* Theme Visibility Configurations */
 [data-theme="morning"] .celestial-wrapper,
 [data-theme="rain"] .celestial-wrapper {
@@ -187,44 +177,39 @@ header {
     transform: scale(0.5) translateY(30px);
 }
 
-/* Evening Setup */
+[data-theme="evening"] .celestial-wrapper {
+    /* Hard-cut crescent mask path */
+    clip-path: path('M 50 0 A 25 25 0 1 1 15 41 A 22 22 0 1 0 50 0 Z');
+}
 [data-theme="evening"] .moon-base {
     background-color: #fff2e6;
     box-shadow: 0 0 10px rgba(255, 242, 230, 0.3);
 }
-[data-theme="evening"] .moon-shadow {
-    background-color: #000000; /* Set to black */
-    transform: translate(-12px, 8px) scale(0.95); 
-}
 
-/* Midnight Setup */
 [data-theme="midnight"] .moon-base {
     background-color: #ffffff;
     box-shadow: 0 0 25px 5px rgba(255, 255, 255, 0.4);
 }
-[data-theme="midnight"] .moon-shadow {
-    background-color: #000000; /* Set to black */
+
+/* --- LUNAR MASKING PHASE CONTROLS --- */
+[data-theme="midnight"] .celestial-wrapper[data-phase="crescent"] {
+    clip-path: path('M 50 0 A 25 25 0 1 1 15 41 A 22 22 0 1 0 50 0 Z');
 }
 
-/* --- MOON CYCLE PHASES ENGINE --- */
-[data-theme="midnight"] .celestial-wrapper[data-phase="crescent"] .moon-shadow {
-    transform: translate(-14px, 10px) scale(0.95);
+[data-theme="midnight"] .celestial-wrapper[data-phase="half"] {
+    clip-path: path('M 25 0 A 25 25 0 0 1 25 50 Z');
 }
 
-[data-theme="midnight"] .celestial-wrapper[data-phase="half"] .moon-shadow {
-    transform: translate(-50%, 0) scale(1);
+[data-theme="midnight"] .celestial-wrapper[data-phase="gibbous"] {
+    clip-path: path('M 50 0 A 25 25 0 1 1 50 50 A 13 25 0 0 1 50 0 Z');
 }
 
-[data-theme="midnight"] .celestial-wrapper[data-phase="gibbous"] .moon-shadow {
-    transform: translate(-80%, 15%) scale(0.9) rotate(-20deg);
+[data-theme="midnight"] .celestial-wrapper[data-phase="full"] {
+    clip-path: path('M 25 0 A 25 25 0 1 1 24.9 0 Z'); /* Unmasked complete circle */
 }
 
-[data-theme="midnight"] .celestial-wrapper[data-phase="full"] .moon-shadow {
-    transform: translate(-110%, 110%);
-}
-
-[data-theme="midnight"] .celestial-wrapper[data-phase="new"] .moon-shadow {
-    transform: translate(0, 0) scale(1.05);
+[data-theme="midnight"] .celestial-wrapper[data-phase="new"] {
+    clip-path: path('M 0 0 L 0 0 Z'); /* Completely hidden geometry */
 }
 
 /* --- TWINKLING BACKGROUND STARS ENGINE --- */
@@ -240,7 +225,6 @@ header {
     transition: opacity 1s ease;
 }
 
-/* Individual star blueprints dropped by JavaScript */
 .star {
     position: absolute;
     background-color: #ffffff;
@@ -490,7 +474,6 @@ header {
    MOBILE RESPONSIVE MEDIA QUERIES (Screens under 768px)
    ========================================================= */
 @media (max-width: 768px) {
-    
     header {
         padding: 20px;
         flex-direction: row; 
@@ -536,7 +519,7 @@ header {
 
     .celestial-wrapper {
         top: 80px; 
-        right: 25%; /* Keeps wrapper from clipping beneath vertical floating buttons */
+        right: 25%; 
         width: 35px;
         height: 35px;
     }
