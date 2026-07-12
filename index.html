@@ -125,6 +125,69 @@
             border-right: 1px solid rgba(255, 255, 255, 0.05);
             margin-right: 4px;
         }
+
+        /* Workbench Multiplier UI Styles */
+        .quantity-selector-container {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-top: 20px;
+            background: rgba(255, 255, 255, 0.05);
+            padding: 10px 14px;
+            border-radius: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .quantity-label {
+            font-size: 0.85rem;
+            color: rgba(255, 255, 255, 0.7);
+            font-weight: 600;
+        }
+
+        .quantity-controls {
+            display: flex;
+            align-items: center;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 6px;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            overflow: hidden;
+        }
+
+        .qty-btn {
+            background: transparent;
+            border: none;
+            color: #fff;
+            width: 32px;
+            height: 32px;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .qty-btn:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .qty-input {
+            width: 45px;
+            height: 32px;
+            background: transparent;
+            border: none;
+            border-left: 1px solid rgba(255, 255, 255, 0.15);
+            border-right: 1px solid rgba(255, 255, 255, 0.15);
+            color: #fff;
+            text-align: center;
+            font-size: 0.95rem;
+            font-weight: 700;
+            outline: none;
+        }
+
+        /* Remove spin arrows from numeric input */
+        .qty-input::-webkit-outer-spin-button,
+        .qty-input::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
     </style>
 </head>
 <body>
@@ -208,7 +271,17 @@
                         <h4>Bohr Electron Shell Mapping:</h4>
                         <p id="modal-shells">-</p>
                     </div>
-                    <button class="workbench-direct-btn" id="modal-add-workbench-btn">Inject into Workbench</button>
+
+                    <div class="quantity-selector-container">
+                        <span class="quantity-label">Batch Quantity:</span>
+                        <div class="quantity-controls">
+                            <button class="qty-btn" type="button" onclick="adjustModalQty(-1)">−</button>
+                            <input class="qty-input" type="number" id="modal-qty-input" value="1" min="1" max="50" onchange="validateModalQty()">
+                            <button class="qty-btn" type="button" onclick="adjustModalQty(1)">+</button>
+                        </div>
+                    </div>
+
+                    <button class="workbench-direct-btn" style="margin-top:15px;" id="modal-add-workbench-btn">Inject into Workbench</button>
                 </div>
             </div>
         </div>
@@ -425,7 +498,7 @@
             {num:103,sym:"Lr",name:"Lawrencium",group:"actinide",col:18,row:10,shells:[2,8,18,32,32,9,2],weight:266,neutrons:163,valency:3}
         ];
 
-        // MASTER DATABASE OF PROVEN CHEMICAL COMPOSITIONS (Standardized Key Parsing)
+        // MASTER DATABASE OF PROVEN CHEMICAL COMPOSITIONS
         const formulaRegistry = {
             "H2O": { name: "Water", desc: "Essential for all known forms of life. Acts as a universal polar solvent." },
             "CO2": { name: "Carbon Dioxide", desc: "Greenhouse gas vital for organic plant respiration and carbon cycles." },
@@ -489,7 +562,6 @@
                 const elementCard = document.createElement('div');
                 elementCard.className = `element-card group-${elem.group}`;
                 
-                // Shift variables to match axis dimensions neatly
                 const targetCol = elem.col + 1; 
                 const targetRow = (elem.row > 7) ? elem.row + 2 : elem.row + 1;
 
@@ -507,16 +579,36 @@
             tableContainer.appendChild(fragment);
         }
 
-        function injectActiveIntoSandbox() {
-            if(!currentActiveElement) return;
-            addToSandbox(currentActiveElement);
-            closeModal();
-            document.querySelector('.sandbox-section').scrollIntoView({ behavior: 'smooth' });
+        // Multiplier Adjustment Utilities
+        function adjustModalQty(change) {
+            const qtyInput = document.getElementById('modal-qty-input');
+            let currentVal = parseInt(qtyInput.value) || 1;
+            let newVal = currentVal + change;
+            if (newVal < 1) newVal = 1;
+            if (newVal > 50) newVal = 50;
+            qtyInput.value = newVal;
         }
 
-        function addToSandbox(element) {
-            selectedSandboxElements.push(element);
+        function validateModalQty() {
+            const qtyInput = document.getElementById('modal-qty-input');
+            let val = parseInt(qtyInput.value);
+            if (isNaN(val) || val < 1) qtyInput.value = 1;
+            if (val > 50) qtyInput.value = 50;
+        }
+
+        function injectActiveIntoSandbox() {
+            if(!currentActiveElement) return;
+            const qtyInput = document.getElementById('modal-qty-input');
+            const count = parseInt(qtyInput.value) || 1;
+            
+            // Bulk push chosen quantities at once
+            for(let i = 0; i < count; i++) {
+                selectedSandboxElements.push(currentActiveElement);
+            }
+            
             updateSandboxUI();
+            closeModal();
+            document.querySelector('.sandbox-section').scrollIntoView({ behavior: 'smooth' });
         }
 
         window.removeSandboxItem = function(index) {
@@ -556,18 +648,15 @@
             let totalValency = 0;
             let containsNoble = false;
 
-            // Step 1: Accumulate total counts of elements clicked
             selectedSandboxElements.forEach(elem => {
                 counts[elem.sym] = (counts[elem.sym] || 0) + 1;
                 totalValency += elem.valency;
                 if(elem.group === 'noble') containsNoble = true;
             });
 
-            // Step 2: Generate all probable naming arrangement variants (Standard, Alphabetical, Hill System Rule)
             const generateKeys = (countsMap) => {
                 const rawSymbols = Object.keys(countsMap);
                 
-                // Hill sorting strategy (Carbon first, then Hydrogen, then all other elements sorted alphabetically)
                 const hillSortedSymbols = [...rawSymbols].sort((a, b) => {
                     if (a === 'C' && b !== 'C') return -1;
                     if (b === 'C' && a !== 'C') return 1;
@@ -576,7 +665,6 @@
                     return a.localeCompare(b);
                 });
 
-                // Standard alphabetical sorting map
                 const alphaSortedSymbols = [...rawSymbols].sort().reverse(); 
 
                 const mapKey = (arr) => arr.map(sym => countsMap[sym] > 1 ? `${sym}${countsMap[sym]}` : sym).join('');
@@ -588,7 +676,6 @@
             const statusNode = document.getElementById('reaction-status');
             const detailsNode = document.getElementById('compound-details');
 
-            // Step 3: Scan master verified chemistry registry database for direct hits
             let foundMatch = null;
             for(let key of potentialKeys) {
                 if(formulaRegistry[key]) {
@@ -604,7 +691,6 @@
                 return;
             }
 
-            // Step 4: Pure Elemental phase aggregates
             if (Object.keys(counts).length === 1) {
                 const element = selectedSandboxElements[0];
                 const key = potentialKeys[0];
@@ -614,7 +700,6 @@
                 return;
             }
 
-            // Step 5: Noble Gas configuration rules
             if (containsNoble) {
                 statusNode.innerText = `Inert Gas Repulsion`;
                 statusNode.className = "status-error";
@@ -622,7 +707,6 @@
                 return;
             }
 
-            // Step 6: Dynamic Valency Octet Matching Fallback
             if (totalValency === 0) {
                 statusNode.innerText = `Valid Chemical Composition Matrix (${potentialKeys[0]})`;
                 statusNode.className = "status-success";
@@ -634,13 +718,17 @@
             }
         }
 
-        // Quantum Bohr Projector Visualizer Engine (Adaptive Shell Scaling Update)
+        // Quantum Bohr Projector Visualizer Engine
         let animationFrameId = null;
         const canvas = document.getElementById('atom-canvas');
         const ctx = canvas.getContext('2d');
         
         function openAtomicVisualizer(element) {
             currentActiveElement = element;
+            
+            // Reset quantity to 1 each time modal opens
+            document.getElementById('modal-qty-input').value = 1;
+
             document.getElementById('modal-element-name').innerText = `${element.name} (${element.sym})`;
             document.getElementById('modal-group').innerText = element.group.toUpperCase();
             document.getElementById('modal-weight').innerText = element.weight;
@@ -663,7 +751,6 @@
                 const cx = canvas.width / 2;
                 const cy = canvas.height / 2;
 
-                // Core Nucleus
                 ctx.beginPath();
                 ctx.arc(cx, cy, 18, 0, Math.PI * 2);
                 ctx.fillStyle = '#ff4b4b'; 
@@ -675,7 +762,6 @@
                 ctx.textBaseline = 'middle';
                 ctx.fillText(`${element.sym}`, cx, cy);
 
-                // Safe viewport constraints to eliminate edge clipping
                 const maxAllowedRadius = 145; 
                 const minStartingRadius = 45;
 
@@ -687,13 +773,11 @@
                     const electronCount = element.shells[i];
                     const currentShellColor = getShellColor(i);
 
-                    // Render Orbital Rings
                     ctx.beginPath();
                     ctx.arc(cx, cy, radius, 0, Math.PI * 2);
                     ctx.strokeStyle = 'rgba(255, 255, 255, 0.06)';
                     ctx.stroke();
 
-                    // Render Sub-shell Electrons
                     for (let j = 0; j < electronCount; j++) {
                         const direction = i % 2 === 0 ? 1 : -1;
                         const localAngle = (angle * direction * (0.6 / (i + 1))) + (j * (Math.PI * 2 / electronCount));
