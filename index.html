@@ -100,6 +100,31 @@
         .status-success { color: #00ff88; font-weight: bold; }
         .status-pending { color: #ffaa00; font-weight: bold; }
         .status-error { color: #ff4b4b; font-weight: bold; }
+
+        /* Periodic Axis Structural Label Styling Alignment rules */
+        .table-axis-label {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Segoe UI', system-ui, sans-serif;
+            font-size: 0.8rem;
+            font-weight: 700;
+            color: rgba(255, 255, 255, 0.35);
+            pointer-events: none;
+            user-select: none;
+        }
+
+        .group-num-label {
+            padding-bottom: 6px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            margin-bottom: 4px;
+        }
+
+        .period-num-label {
+            padding-right: 10px;
+            border-right: 1px solid rgba(255, 255, 255, 0.05);
+            margin-right: 4px;
+        }
     </style>
 </head>
 <body>
@@ -439,11 +464,37 @@
             tableContainer.innerHTML = '';
             const fragment = document.createDocumentFragment();
 
+            // 1. Inject Group Labels (1 to 18) at the top header row layer
+            for (let col = 1; col <= 18; col++) {
+                const groupLabel = document.createElement('div');
+                groupLabel.className = 'table-axis-label group-num-label';
+                groupLabel.style.gridColumn = col + 1; // Align forward past the period gutter column
+                groupLabel.style.gridRow = 1;
+                groupLabel.innerText = col;
+                fragment.appendChild(groupLabel);
+            }
+
+            // 2. Inject Period Labels (1 to 7) down the left-most layout margin column
+            for (let row = 1; row <= 7; row++) {
+                const periodLabel = document.createElement('div');
+                periodLabel.className = 'table-axis-label period-num-label';
+                periodLabel.style.gridColumn = 1;
+                periodLabel.style.gridRow = row + 1; // Offset down past the horizontal group header row
+                periodLabel.innerText = row;
+                fragment.appendChild(periodLabel);
+            }
+
+            // 3. Render and index elements with safe shifted tracking parameters
             elementMap.forEach(elem => {
                 const elementCard = document.createElement('div');
                 elementCard.className = `element-card group-${elem.group}`;
-                elementCard.style.gridColumn = elem.col;
-                elementCard.style.gridRow = elem.row;
+                
+                // Shift variables to match axis dimensions neatly
+                const targetCol = elem.col + 1; 
+                const targetRow = (elem.row > 7) ? elem.row + 2 : elem.row + 1;
+
+                elementCard.style.gridColumn = targetCol;
+                elementCard.style.gridRow = targetRow;
                 
                 elementCard.innerHTML = `
                     <span class="atomic-number">${elem.num}</span>
@@ -572,7 +623,6 @@
             }
 
             // Step 6: Dynamic Valency Octet Matching Fallback
-            // If the exact compound isn't named in our master registry dictionary but valency sums balance perfectly out to zero, it is a proven compound!
             if (totalValency === 0) {
                 statusNode.innerText = `Valid Chemical Composition Matrix (${potentialKeys[0]})`;
                 statusNode.className = "status-success";
