@@ -1,42 +1,100 @@
 /* =========================================================
-   Luma Mental Health App - Optimized Responsive Stylesheet
+   Luma Periodic Table Visualizer - Optimized Stylesheet
    ========================================================= */
 
 :root {
     --sky-gradient: linear-gradient(to bottom, #1f2a44, #4a2e56, #cf6a32, #e67e22);
-    --bg-tint: rgba(230, 126, 34, 0.15);
+    --bg-tint: rgba(230, 126, 34, 0.08);
     --mountain-back: #4d4661;
     --mountain-mid: #382c47;
     --mountain-front: #1f122b;
     --text-color: #ffffff;
     --accent-color: #f39c12;
+
+    /* Responsive Chemistry Category Base Theme Palettes */
+    --elem-bg-nonmetal: rgba(230, 126, 34, 0.25);
+    --elem-border-nonmetal: rgba(230, 126, 34, 0.6);
+    --elem-bg-noble: rgba(155, 89, 182, 0.25);
+    --elem-border-noble: rgba(155, 89, 182, 0.6);
+    --elem-bg-alkali: rgba(231, 76, 60, 0.25);
+    --elem-border-alkali: rgba(231, 76, 60, 0.6);
+    --elem-bg-alkaline: rgba(241, 196, 15, 0.25);
+    --elem-border-alkaline: rgba(241, 196, 15, 0.6);
+    --elem-bg-transition: rgba(52, 152, 219, 0.25);
+    --elem-border-transition: rgba(52, 152, 219, 0.6);
+    --elem-bg-metalloid: rgba(46, 204, 113, 0.25);
+    --elem-border-metalloid: rgba(46, 204, 113, 0.6);
+    --elem-bg-other: rgba(149, 165, 166, 0.25);
+    --elem-border-other: rgba(149, 165, 166, 0.6);
 }
 
 [data-theme="morning"] {
     --sky-gradient: linear-gradient(to bottom, #4a7c59, #68b0ab, #c0d6df, #f3c6cf);
-    --bg-tint: rgba(104, 176, 171, 0.15);
+    --bg-tint: rgba(104, 176, 171, 0.1);
     --mountain-back: #4f6d7a;
     --mountain-mid: #3d5a6c;
     --mountain-front: #233d4d;
-    --accent-color: #f3c6cf;
+    --accent-color: #3d5a6c;
+    --text-color: #1c2d37;
+
+    --elem-bg-nonmetal: rgba(74, 124, 89, 0.2);
+    --elem-border-nonmetal: rgba(74, 124, 89, 0.7);
+    --elem-bg-noble: rgba(104, 176, 171, 0.25);
+    --elem-border-noble: rgba(104, 176, 171, 0.8);
+    --elem-bg-alkali: rgba(217, 131, 144, 0.3);
+    --elem-border-alkali: rgba(217, 131, 144, 0.8);
+    --elem-bg-alkaline: rgba(224, 169, 109, 0.3);
+    --elem-border-alkaline: rgba(224, 169, 109, 0.8);
+    --elem-bg-transition: rgba(79, 109, 122, 0.2);
+    --elem-border-transition: rgba(79, 109, 122, 0.7);
+    --elem-bg-metalloid: rgba(140, 171, 161, 0.3);
+    --elem-border-metalloid: rgba(140, 171, 161, 0.8);
 }
 
 [data-theme="midnight"] {
     --sky-gradient: linear-gradient(to bottom, #060713, #0f1026, #2d134d);
-    --bg-tint: rgba(45, 19, 77, 0.3);
+    --bg-tint: rgba(45, 19, 77, 0.15);
     --mountain-back: #1b1b22;   
     --mountain-mid: #0f1015;    
     --mountain-front: #050507;  
     --accent-color: #a988ff;
+    --text-color: #ffffff;
+
+    --elem-bg-nonmetal: rgba(69, 39, 122, 0.3);
+    --elem-border-nonmetal: rgba(141, 95, 230, 0.6);
+    --elem-bg-noble: rgba(15, 76, 129, 0.3);
+    --elem-border-noble: rgba(41, 128, 204, 0.6);
+    --elem-bg-alkali: rgba(120, 24, 74, 0.3);
+    --elem-border-alkali: rgba(214, 48, 117, 0.6);
+    --elem-bg-alkaline: rgba(186, 115, 0, 0.25);
+    --elem-border-alkaline: rgba(253, 150, 68, 0.6);
+    --elem-bg-transition: rgba(26, 42, 86, 0.4);
+    --elem-border-transition: rgba(30, 144, 255, 0.6);
+    --elem-bg-metalloid: rgba(33, 140, 116, 0.25);
+    --elem-border-metalloid: rgba(74, 222, 128, 0.6);
 }
 
 [data-theme="rain"] {
     --sky-gradient: linear-gradient(to bottom, #2c3e50, #34495e, #5d6d7e, #7f8c8d);
-    --bg-tint: rgba(52, 73, 94, 0.4);
+    --bg-tint: rgba(52, 73, 94, 0.2);
     --mountain-back: #2e4053;
     --mountain-mid: #212f3d;
     --mountain-front: #17202a;
     --accent-color: #aeb6bf;
+    --text-color: #eceff1;
+
+    --elem-bg-nonmetal: rgba(93, 109, 126, 0.3);
+    --elem-border-nonmetal: rgba(171, 178, 185, 0.6);
+    --elem-bg-noble: rgba(52, 73, 94, 0.4);
+    --elem-border-noble: rgba(110, 127, 143, 0.7);
+    --elem-bg-alkali: rgba(140, 75, 75, 0.25);
+    --elem-border-alkali: rgba(200, 110, 110, 0.6);
+    --elem-bg-alkaline: rgba(145, 120, 70, 0.25);
+    --elem-border-alkaline: rgba(210, 180, 110, 0.6);
+    --elem-bg-transition: rgba(44, 62, 80, 0.4);
+    --elem-border-transition: rgba(90, 107, 124, 0.7);
+    --elem-bg-metalloid: rgba(75, 95, 90, 0.3);
+    --elem-border-metalloid: rgba(120, 150, 140, 0.6);
 }
 
 * {
@@ -50,8 +108,8 @@ body {
     background-color: var(--mountain-front);
     color: var(--text-color);
     overflow-x: hidden;
-    min-height: 1800px;
-    transition: background-color 0.8s ease;
+    min-height: 1600px;
+    transition: background-color 0.8s ease, color 0.8s ease;
 }
 
 header {
@@ -72,12 +130,12 @@ header {
     font-weight: 600;
     letter-spacing: 1px;
     color: var(--text-color);
-    opacity: 0.5;
-    transition: opacity 0.3s ease;
+    opacity: 0.6;
+    transition: opacity 0.3s ease, color 0.8s ease;
     pointer-events: auto;
 }
-
-.logo:hover { opacity: 0.9; }
+[data-theme="morning"] .logo { opacity: 0.85; }
+.logo:hover { opacity: 0.95; }
 
 .theme-controls {
     display: flex;
@@ -98,24 +156,33 @@ header {
     justify-content: center;
     align-items: center;
     opacity: 0.4;
-    transition: all 0.3s ease;
+    transition: all 0.3s ease, color 0.8s ease;
+}
+[data-theme="morning"] .theme-btn {
+    background: rgba(0, 0, 0, 0.03);
+    border: 1px solid rgba(0, 0, 0, 0.08);
 }
 
 .theme-btn:hover {
     opacity: 0.8;
     background: rgba(255, 255, 255, 0.15);
 }
+[data-theme="morning"] .theme-btn:hover { background: rgba(0, 0, 0, 0.08); }
 
 .theme-btn.active {
     opacity: 1;
     background: rgba(255, 255, 255, 0.25);
     border-color: rgba(255, 255, 255, 0.5);
 }
+[data-theme="morning"] .theme-btn.active {
+    background: rgba(0, 0, 0, 0.12);
+    border-color: rgba(0, 0, 0, 0.3);
+}
 
 .parallax-container {
     position: relative;
     width: 100%;
-    height: 100vh;
+    height: 75vh;
     overflow: hidden;
     display: flex;
     justify-content: center;
@@ -139,7 +206,6 @@ header {
     will-change: transform, opacity;
 }
 
-/* Visibility states across scene types */
 [data-theme="midnight"] .moon {
     background-color: #ffffff;
     box-shadow: 0 0 25px 6px rgba(255, 255, 255, 0.5);
@@ -179,7 +245,7 @@ header {
     100% { opacity: 1; transform: scale(1.1); }
 }
 
-/* --- OPTIMIZED LAYER HARNESS (GPU FORCE) --- */
+/* --- PARALLAX HIERARCHY --- */
 .parallax-layer {
     position: absolute;
     bottom: -2px;
@@ -224,6 +290,7 @@ header {
     transform: translate3d(0, -50px, 0);
     will-change: transform;
 }
+[data-theme="morning"] .hero-title { text-shadow: 0 2px 8px rgba(255,255,255,0.4); }
 
 #layer-mountain-front {
     z-index: 6;
@@ -234,7 +301,7 @@ header {
 [data-theme="morning"] #layer-mountain-front { background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 600" preserveAspectRatio="none"><path fill="%23233d4d" d="M0,520 L180,380 L450,540 L800,320 L1150,510 L1440,360 L1440,600 L0,600 Z"></path></svg>'); }
 [data-theme="rain"] #layer-mountain-front { background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 600" preserveAspectRatio="none"><path fill="%2317202a" d="M0,520 L180,380 L450,540 L800,320 L1150,510 L1440,360 L1440,600 L0,600 Z"></path></svg>'); }
 
-/* --- COMPACT WEATHER CONTROLLER --- */
+/* --- WEATHER ELEMENTS --- */
 .rain-container {
     position: absolute;
     top: 0;
@@ -246,7 +313,6 @@ header {
     opacity: 0;
     transition: opacity 0.5s ease;
 }
-
 [data-theme="rain"] .rain-container { opacity: 1; }
 
 .drop {
@@ -257,13 +323,12 @@ header {
     transform: rotate(15deg);
     animation: fall linear infinite;
 }
-
 @keyframes fall {
     0% { transform: translate3d(0, -50px, 0) rotate(15deg); }
     100% { transform: translate3d(-150px, 105vh, 0) rotate(15deg); }
 }
 
-/* --- RARE SHOOTING STARS ENGINE WITH THIN TRAILS --- */
+/* --- RARE SHOOTING STARS ENGINE --- */
 .shooting-stars {
     position: absolute;
     top: 0;
@@ -274,7 +339,6 @@ header {
     pointer-events: none;
     display: none; 
 }
-
 [data-theme="midnight"] .shooting-stars { display: block; }
 
 .shooting-stars span {
@@ -284,39 +348,37 @@ header {
     background: #ffffff;
     border-radius: 50%;
     box-shadow: 0 0 8px 2px #ffffff;
-    animation: sweepTrail 12s linear infinite; /* Increased total duration to create large gaps of empty space */
+    animation: sweepTrail 12s linear infinite;
     opacity: 0;
 }
 
-/* Tapering thin tail trail added via hardware-accelerated pseudo element */
 .shooting-stars span::before {
     content: '';
     position: absolute;
     top: 50%;
     transform: translateY(-50%);
-    width: 140px; /* Length of the tail */
-    height: 1px;  /* Hairline trail thickness */
+    width: 140px;
+    height: 1px;
     background: linear-gradient(90deg, rgba(255, 255, 255, 0.7), transparent);
 }
 
 @keyframes sweepTrail {
     0% { transform: rotate(315deg) translate3d(200px, 0, 0); opacity: 0; }
-    2% { opacity: 1; } /* Rapidly lights up */
-    8% { transform: rotate(315deg) translate3d(-800px, 0, 0); opacity: 0; } /* Fast traversal */
-    100% { transform: rotate(315deg) translate3d(-800px, 0, 0); opacity: 0; } /* Long resting cooldown loop */
+    2% { opacity: 1; }
+    8% { transform: rotate(315deg) translate3d(-800px, 0, 0); opacity: 0; }
+    100% { transform: rotate(315deg) translate3d(-800px, 0, 0); opacity: 0; }
 }
 
-/* Spatially isolated trajectories with deeply padded delay loops for realistic rarity */
 .shooting-stars span:nth-child(1) { top: 12%; right: 10%; animation-delay: 0s; }
 .shooting-stars span:nth-child(2) { top: 7%; right: 35%; animation-delay: 4.5s; }
 .shooting-stars span:nth-child(3) { top: 22%; right: 18%; animation-delay: 2.1s; }
 .shooting-stars span:nth-child(4) { top: 15%; right: 60%; animation-delay: 8.2s; }
 .shooting-stars span:nth-child(5) { top: 28%; right: 45%; animation-delay: 6.0s; }
 
-/* --- CONTENT AND LAYOUT BLOCK --- */
+/* --- OPTIMIZED PERIODIC VISUALIZER LAYOUT --- */
 .app-content-section {
     background-color: var(--mountain-front);
-    padding: 90px 30px;
+    padding: 80px 40px;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -326,13 +388,14 @@ header {
 }
 
 .container {
-    max-width: 900px;
+    max-width: 1400px;
+    width: 100%;
     text-align: center;
 }
 
 .container h2 {
     font-size: 2.2rem;
-    margin-bottom: 20px;
+    margin-bottom: 15px;
     color: var(--accent-color);
     transition: color 0.8s ease;
 }
@@ -340,30 +403,92 @@ header {
 .container p {
     font-size: 1.1rem;
     line-height: 1.7;
-    color: rgba(255,255,255,0.75);
-    margin-bottom: 35px;
+    color: var(--text-color);
+    opacity: 0.75;
+    margin-bottom: 45px;
+    transition: color 0.8s ease;
 }
 
-.placeholder-box {
-    width: 100%;
-    height: 350px;
-    border: 2px dashed rgba(255,255,255,0.15);
-    border-radius: 10px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    color: rgba(255,255,255,0.35);
-    font-size: 1.1rem;
+/* --- THE HARDWARE GRID CORE --- */
+.periodic-table-grid {
+    display: grid;
+    grid-template-columns: repeat(18, minmax(50px, 1fr));
+    grid-gap: 6px;
+    padding: 25px;
+    border-radius: 14px;
     background: var(--bg-tint);
-    transition: background 0.8s ease;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    overflow-x: auto;
+    transition: background 0.8s ease, border-color 0.8s ease;
+}
+[data-theme="morning"] .periodic-table-grid { border-color: rgba(0, 0, 0, 0.08); }
+
+.element-card {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 6px;
+    padding: 8px 4px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    aspect-ratio: 1 / 1.15;
+    position: relative;
+    cursor: crosshair;
+    transition: transform 0.2s cubic-bezier(0.2, 0.8, 0.2, 1), background-color 0.8s ease, border-color 0.8s ease;
 }
 
-/* --- RESPONSIVE STRUCTURAL OVERRIDES --- */
+.element-card:hover {
+    transform: scale(1.08);
+    z-index: 50;
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
+}
+
+.atomic-number {
+    font-size: 0.7rem;
+    align-self: flex-start;
+    padding-left: 4px;
+    opacity: 0.6;
+}
+
+.symbol {
+    font-size: 1.3rem;
+    font-weight: 700;
+    letter-spacing: -0.5px;
+}
+
+.name {
+    font-size: 0.6rem;
+    opacity: 0.7;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    width: 100%;
+}
+
+/* --- ELEMENT FAMILY COLOR MAPPINGS --- */
+.group-nonmetal { background-color: var(--elem-bg-nonmetal); border-color: var(--elem-border-nonmetal); }
+.group-noble { background-color: var(--elem-bg-noble); border-color: var(--elem-border-noble); }
+.group-alkali { background-color: var(--elem-bg-alkali); border-color: var(--elem-border-alkali); }
+.group-alkaline { background-color: var(--elem-bg-alkaline); border-color: var(--elem-border-alkaline); }
+.group-transition { background-color: var(--elem-bg-transition); border-color: var(--elem-border-transition); }
+.group-metalloid { background-color: var(--elem-bg-metalloid); border-color: var(--elem-border-metalloid); }
+.group-post-transition { background-color: var(--elem-bg-other); border-color: var(--elem-border-other); }
+.group-halogen { background-color: var(--elem-bg-nonmetal); border-color: var(--elem-border-nonmetal); }
+.group-actinide { background-color: var(--elem-bg-other); border-color: var(--elem-border-other); }
+
+/* --- RESPONSIVE OVERRIDES --- */
+@media (max-width: 1024px) {
+    .periodic-table-grid {
+        grid-template-columns: repeat(18, 55px); /* Maintain geometric layout integrity via horizontal overflow swipe */
+    }
+}
+
 @media (max-width: 768px) {
     header { padding: 20px; }
     .logo { font-size: 1rem; }
     .theme-btn { width: 38px; height: 38px; }
-    .parallax-container { height: 55vh; }
+    .parallax-container { height: 45vh; }
     
     .hero-title {
         font-size: 2.2rem;
@@ -377,7 +502,6 @@ header {
         height: 38px;
     }
     
-    .app-content-section { padding: 50px 20px; }
+    .app-content-section { padding: 40px 15px; }
     .container h2 { font-size: 1.6rem; }
-    .placeholder-box { height: 260px; }
 }
