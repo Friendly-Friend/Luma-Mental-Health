@@ -400,16 +400,35 @@
             {num:103,sym:"Lr",name:"Lawrencium",group:"actinide",col:18,row:10,shells:[2,8,18,32,32,9,2],weight:266,neutrons:163,valency:3}
         ];
 
+        // MASTER DATABASE OF PROVEN CHEMICAL COMPOSITIONS (Standardized Key Parsing)
         const formulaRegistry = {
             "H2O": { name: "Water", desc: "Essential for all known forms of life. Acts as a universal polar solvent." },
-            "CO2": { name: "Carbon Dioxide", desc: "Greenhouse gas vital for organic plant photosynthesis cycles." },
-            "ClNa": { name: "Sodium Chloride (Table Salt)", desc: "Classic ionic matrix structure defining common salt compound architecture." },
-            "NaCl": { name: "Sodium Chloride (Table Salt)", desc: "Classic ionic matrix structure defining common salt compound architecture." },
-            "CH4": { name: "Methane", desc: "Simple stable hydrocarbon component heavily powering natural gas clean fuels." },
-            "O2": { name: "Oxygen Gas", desc: "Diatomic molecular configuration fueling metabolic cellular respiration structures." },
-            "H2": { name: "Hydrogen Gas", desc: "Highly volatile clean burning elemental aerospace core fuel element." },
-            "ClH": { name: "Hydrochloric Acid", desc: "Highly corrosive mineral strong acid vital for stomach digestion loops." },
-            "HCl": { name: "Hydrochloric Acid", desc: "Highly corrosive mineral strong acid vital for stomach digestion loops." }
+            "CO2": { name: "Carbon Dioxide", desc: "Greenhouse gas vital for organic plant respiration and carbon cycles." },
+            "ClNa": { name: "Sodium Chloride (Table Salt)", desc: "Classic ionic lattice structure defining common salt compound configurations." },
+            "CH4": { name: "Methane", desc: "The simplest staple alkane hydrocarbon component, primary constituent of natural gas fuel." },
+            "O2": { name: "Oxygen Gas", desc: "Diatomic molecular configuration fueling aerobic metabolic cellular respiration structures." },
+            "H2": { name: "Hydrogen Gas", desc: "Highly volatile, light, clean-burning elemental aerospace core fuel." },
+            "ClH": { name: "Hydrochloric Acid", desc: "Highly corrosive mineral strong acid vital for automotive, industrial processing, and stomach digestion loops." },
+            "H2SO4": { name: "Sulfuric Acid", desc: "Highly corrosive mineral strong diprotic acid widely utilized in chemical manufacturing and battery cells." },
+            "HNO3": { name: "Nitric Acid", desc: "Highly corrosive mineral acid used for premium chemical synthesis, nitration processes, and liquid rocket fuels." },
+            "NH3": { name: "Ammonia", desc: "Pungent stable nitrogen hydride compound essential for global agricultural fertilizers and synthetic chemical production." },
+            "C6H12O6": { name: "Glucose", desc: "Crucial monosaccharide simple carbohydrate substrate providing foundational organic cellular respiration energy." },
+            "C2H5OH": { name: "Ethanol (Alcohol)", desc: "Clear volatile liquid compound widely deployed as a clean bio-fuel additive, antiseptic, and recreational solvent." },
+            "CH3COOH": { name: "Acetic Acid (Vinegar)", desc: "Simple carboxylic organic acid generating the classic sharp aroma of cooking vinegars and ester synthesis." },
+            "CaCO3": { name: "Calcium Carbonate", desc: "Abundant geological mineral backbone building ocean seashells, eggshells, limestone caverns, and chalk matrix lines." },
+            "NaHCO3": { name: "Sodium Bicarbonate (Baking Soda)", desc: "White crystalline chemical base salt acting as an effective leavening agent and systemic acid neutralizer." },
+            "NaOH": { name: "Sodium Hydroxide (Lye / Caustic Soda)", desc: "Intensely alkaline caustic chemical base deployed extensively across heavy papermaking, soap crafting, and drain cleaning." },
+            "KOH": { name: "Potassium Hydroxide", desc: "Strong alkaline corrosive caustic chemical base highly integral for engineering soft liquid soaps and alkaline batteries." },
+            "N2O": { name: "Nitrous Oxide (Laughing Gas)", desc: "Stable atmospheric nitrogen oxide working cleanly as a surgical anesthetic oxidizer and automotive performance propellant boosters." },
+            "O3": { name: "Ozone", desc: "Highly reactive triatomic oxygen allotrope shielding planetary biospheres from solar ultraviolet irradiation." },
+            "H2O2": { name: "Hydrogen Peroxide", desc: "Simple unstable pale-blue oxidizer widely harnessed for chemical bleaching, topical sterilization, and rocketry propulsion." },
+            "Al2O3": { name: "Aluminum Oxide (Alumina)", desc: "Remarkably hard ceramic mineral compound found naturally as corundum, sapphire, and vital metal refineries." },
+            "Fe2O3": { name: "Iron(III) Oxide (Rust)", desc: "Classic reddish-brown mineral oxidant formed when metallic iron undergoes atmospheric oxidation loops." },
+            "SiO2": { name: "Silicon Dioxide (Quartz / Silica)", desc: "Exceedingly hard geological network solid creating natural quartz sands, structural glassworks, and computing semiconductors." },
+            "CuSO4": { name: "Copper(II) Sulfate", desc: "Vibrant bright blue crystalline salt compound harnessed extensively in electroplating lines and agricultural fungicides." },
+            "CaCl2": { name: "Calcium Chloride", desc: "Highly hygroscopic mineral salt compound leveraged heavily for rapid ice melting, industrial dust suppression, and food curing." },
+            "C12H22O11": { name: "Sucrose (Table Sugar)", desc: "Complex disaccharide carbohydrate molecule serving as the ultimate universal sweetener across human cuisines." },
+            "KMnO4": { name: "Potassium Permanganate", desc: "Intensely deep purple purificative oxidizing crystalline compound applied cleanly across water filtration systems and clinical skin disinfectants." }
         };
 
         let currentActiveElement = null;
@@ -480,61 +499,88 @@
             evaluateCompoundFormula();
         }
 
+        // INTELLIGENT CHEMICAL PARSER & MIXING ENGINE
         function evaluateCompoundFormula() {
             const counts = {};
             let totalValency = 0;
             let containsNoble = false;
 
+            // Step 1: Accumulate total counts of elements clicked
             selectedSandboxElements.forEach(elem => {
                 counts[elem.sym] = (counts[elem.sym] || 0) + 1;
                 totalValency += elem.valency;
                 if(elem.group === 'noble') containsNoble = true;
             });
 
-            const formulaKey = Object.keys(counts).sort().map(sym => {
-                return counts[sym] > 1 ? `${sym}${counts[sym]}` : sym;
-            }).join('');
+            // Step 2: Generate all probable naming arrangement variants (Standard, Alphabetical, Hill System Rule)
+            const generateKeys = (countsMap) => {
+                const rawSymbols = Object.keys(countsMap);
+                
+                // Hill sorting strategy (Carbon first, then Hydrogen, then all other elements sorted alphabetically)
+                const hillSortedSymbols = [...rawSymbols].sort((a, b) => {
+                    if (a === 'C' && b !== 'C') return -1;
+                    if (b === 'C' && a !== 'C') return 1;
+                    if (a === 'H' && b !== 'H') return -1;
+                    if (b === 'H' && a !== 'H') return 1;
+                    return a.localeCompare(b);
+                });
 
-            const sortedKeysHill = Object.keys(counts).sort((a, b) => {
-                if (a === 'C' && b !== 'C') return -1;
-                if (b === 'C' && a !== 'C') return 1;
-                if (a === 'H' && b !== 'H') return -1;
-                if (b === 'H' && a !== 'H') return 1;
-                return a.localeCompare(b);
-            });
-            const hillFormulaKey = sortedKeysHill.map(sym => counts[sym] > 1 ? `${sym}${counts[sym]}` : sym).join('');
+                // Standard alphabetical sorting map
+                const alphaSortedSymbols = [...rawSymbols].sort().reverse(); 
 
+                const mapKey = (arr) => arr.map(sym => countsMap[sym] > 1 ? `${sym}${countsMap[sym]}` : sym).join('');
+                
+                return [mapKey(hillSortedSymbols), mapKey(alphaSortedSymbols), mapKey(rawSymbols)];
+            };
+
+            const potentialKeys = generateKeys(counts);
             const statusNode = document.getElementById('reaction-status');
             const detailsNode = document.getElementById('compound-details');
 
-            const match = formulaRegistry[formulaKey] || formulaRegistry[hillFormulaKey];
-            if (match) {
-                statusNode.innerText = `Synthesized Matrix Found: ${match.name} (${hillFormulaKey})`;
+            // Step 3: Scan master verified chemistry registry database for direct hits
+            let foundMatch = null;
+            for(let key of potentialKeys) {
+                if(formulaRegistry[key]) {
+                    foundMatch = { formula: key, data: formulaRegistry[key] };
+                    break;
+                }
+            }
+
+            if (foundMatch) {
+                statusNode.innerText = `Synthesized Matrix Found: ${foundMatch.data.name} (${foundMatch.formula})`;
                 statusNode.className = "status-success";
-                detailsNode.innerText = match.desc;
+                detailsNode.innerText = foundMatch.data.desc;
                 return;
             }
 
+            // Step 4: Pure Elemental phase aggregates
             if (Object.keys(counts).length === 1) {
                 const element = selectedSandboxElements[0];
+                const key = potentialKeys[0];
                 statusNode.className = "status-success";
-                statusNode.innerText = `Pure Elemental Phase (${formulaKey})`;
-                detailsNode.innerText = `You have aggregated pure elements of ${element.name}. It creates a completely stable structural lattice setup.`;
+                statusNode.innerText = `Pure Elemental Phase (${key})`;
+                detailsNode.innerText = `Lattice stabilization complete. You have aggregated pure molecules of ${element.name}. This establishes a stable element arrangement.`;
                 return;
             }
 
-            if (totalValency === 0 && !containsNoble) {
-                statusNode.innerText = `Valid Custom Compound Matrix (${hillFormulaKey})`;
-                statusNode.className = "status-success";
-                detailsNode.innerText = `The net electron valencies equal 0. The elements balance out perfectly to build a dynamically stable compound!`;
-            } else if (containsNoble) {
-                statusNode.innerText = `Inert Gas Repulsion (${hillFormulaKey})`;
+            // Step 5: Noble Gas configuration rules
+            if (containsNoble) {
+                statusNode.innerText = `Inert Gas Repulsion`;
                 statusNode.className = "status-error";
-                detailsNode.innerText = "Noble gas items feature closed shell layouts and refuse electron binding updates inside the reactor.";
+                detailsNode.innerText = "Noble gas items feature naturally completed outer electron valence shells and refuse bond transformations inside the visualizer reactor.";
+                return;
+            }
+
+            // Step 6: Dynamic Valency Octet Matching Fallback
+            // If the exact compound isn't named in our master registry dictionary but valency sums balance perfectly out to zero, it is a proven compound!
+            if (totalValency === 0) {
+                statusNode.innerText = `Valid Chemical Composition Matrix (${potentialKeys[0]})`;
+                statusNode.className = "status-success";
+                detailsNode.innerText = `The calculated net valence layout balances perfectly to zero! Outer structural electron shells satisfy the octet rule safely, confirming a real chemical composition.`;
             } else {
-                statusNode.innerText = `Unstable Synthetic Radical (${hillFormulaKey})`;
+                statusNode.innerText = `Unstable Synthetic Radical (${potentialKeys[0]})`;
                 statusNode.className = "status-pending";
-                detailsNode.innerText = `Net Valency Balance Error: ${totalValency > 0 ? '+' : ''}${totalValency}. Outer orbits do not clear out safely, leaving an unbonded, highly reactive mixture.`;
+                detailsNode.innerText = `Net Valency Balance Error: ${totalValency > 0 ? '+' : ''}${totalValency}. Current valence counts don't align to clear out safely, causing a temporary reactive mixture instead of a proven compound. Try adding complementary matching elements!`;
             }
         }
 
@@ -584,7 +630,6 @@
                 const minStartingRadius = 45;
 
                 for (let i = 0; i < shellCount; i++) {
-                    // Dynamically map radii intervals depending on the active node's absolute shell count
                     const radius = shellCount > 1 
                         ? minStartingRadius + (i * (maxAllowedRadius - minStartingRadius) / (shellCount - 1))
                         : minStartingRadius;
