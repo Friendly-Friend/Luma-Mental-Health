@@ -31,7 +31,6 @@
         <div class="parallax-layer" id="layer-sky"></div>
         
         <div class="moon" id="moon-element"></div>
-        
         <div class="twinkling-stars" id="stars-box"></div>
         
         <div class="shooting-stars">
@@ -47,18 +46,39 @@
     <section class="app-content-section">
         <div class="container table-container">
             <h2>Interactive Periodic Table</h2>
-            <p>Explore the architecture of matter inside a reactive, hardware-accelerated grid optimized for all environmental shifts.</p>
+            <p>Explore the architecture of matter. Click any element to project its live, quantum orbital atomic structure.</p>
             
             <div class="periodic-table-grid" id="periodic-table"></div>
         </div>
     </section>
 
+    <div class="atomic-modal" id="atomic-modal">
+        <div class="modal-card">
+            <button class="close-modal-btn" onclick="closeModal()">&times;</button>
+            <div class="modal-body">
+                <div class="atomic-canvas-wrapper">
+                    <canvas id="atom-canvas" width="400" height="400"></canvas>
+                </div>
+                <div class="atomic-details">
+                    <h3 id="modal-element-name">Quantum Node</h3>
+                    <div class="data-badge-row">
+                        <span class="data-badge">Atomic Number: <strong id="modal-atomic-number">-</strong></span>
+                        <span class="data-badge">Group: <strong id="modal-group">-</strong></span>
+                    </div>
+                    <div class="shell-config">
+                        <h4>Electron Configuration per Shell:</h4>
+                        <p id="modal-shells">-</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script>
-        // 1. Optimized High-Speed Precipitation Loop
+        // 1. Weather & Star Ambiance Generators
         const rainBox = document.getElementById('rain-box');
         const dropCount = 60; 
         const rainFragment = document.createDocumentFragment();
-        
         for (let i = 0; i < dropCount; i++) {
             const drop = document.createElement('div');
             drop.classList.add('drop');
@@ -70,106 +90,186 @@
         }
         rainBox.appendChild(rainFragment);
 
-        // 2. Fragment-Cached Star Generation
         function generateStars() {
             const starsBox = document.getElementById('stars-box');
             starsBox.innerHTML = '';
             const starCount = 80;
             const starFragment = document.createDocumentFragment();
-
             for (let i = 0; i < starCount; i++) {
                 const star = document.createElement('div');
                 star.classList.add('star');
                 star.style.left = `${Math.random() * 100}%`;
                 star.style.top = `${Math.random() * 60}%`;
-                
                 const size = Math.random() * 2 + 1;
                 star.style.width = `${size}px`;
                 star.style.height = `${size}px`;
                 star.style.animationDuration = `${2 + Math.random() * 3}s`;
                 star.style.animationDelay = `${Math.random() * 4}s`;
-                
                 starFragment.appendChild(star);
             }
             starsBox.appendChild(starFragment);
         }
         generateStars();
 
-        // 3. GPU-Accelerated Passive Scroll Frame Loop
+        // 2. Parallax Camera Loop
         const backLayer = document.getElementById('layer-mountain-back');
         const midLayer = document.getElementById('layer-mountain-mid');
         const frontLayer = document.getElementById('layer-mountain-front');
         const mainTitle = document.getElementById('main-title');
         const moonElement = document.getElementById('moon-element');
-
         let ticking = false;
 
         window.addEventListener('scroll', () => {
             if (!ticking) {
                 window.requestAnimationFrame(() => {
                     const scrollPos = window.pageYOffset;
-                    
                     backLayer.style.transform = `translate3d(0, ${scrollPos * 0.45}px, 0)`;
                     midLayer.style.transform = `translate3d(0, ${scrollPos * 0.25}px, 0)`;
                     frontLayer.style.transform = `translate3d(0, ${scrollPos * 0.05}px, 0)`;
                     mainTitle.style.transform = `translate3d(0, ${-50 + (scrollPos * 0.35)}px, 0)`;
                     moonElement.style.transform = `translate3d(0, ${scrollPos * 0.55}px, 0)`;
-                    
                     ticking = false;
                 });
                 ticking = true;
             }
         });
 
-        // 4. Centralized Theme Router
         function setTheme(themeName, element) {
             document.documentElement.setAttribute('data-theme', themeName);
-            
             const buttons = document.querySelectorAll('.theme-btn');
             buttons.forEach(btn => btn.classList.remove('active'));
             element.classList.add('active');
         }
 
-        // 5. High-Performance Element Grid Builder
-        const elementsData = [
-            { num: 1, sym: "H", name: "Hydrogen", group: "nonmetal", col: 1, row: 1 },
-            { num: 2, sym: "He", name: "Helium", group: "noble", col: 18, row: 1 },
-            { num: 3, sym: "Li", name: "Lithium", group: "alkali", col: 1, row: 2 },
-            { num: 4, sym: "Be", name: "Beryllium", group: "alkaline", col: 2, row: 2 },
-            { num: 5, sym: "B", name: "Boron", group: "metalloid", col: 13, row: 2 },
-            { num: 6, sym: "C", name: "Carbon", group: "nonmetal", col: 14, row: 2 },
-            { num: 7, sym: "N", name: "Nitrogen", group: "nonmetal", col: 15, row: 2 },
-            { num: 8, sym: "O", name: "Oxygen", group: "nonmetal", col: 16, row: 2 },
-            { num: 9, sym: "F", name: "Fluorine", group: "halogen", col: 17, row: 2 },
-            { num: 10, sym: "Ne", name: "Neon", group: "noble", col: 18, row: 2 },
-            { num: 11, sym: "Na", name: "Sodium", group: "alk alkali", col: 1, row: 3 },
-            { num: 12, sym: "Mg", name: "Magnesium", group: "alkaline", col: 2, row: 3 },
-            { num: 13, sym: "Al", name: "Aluminium", group: "post-transition", col: 13, row: 3 },
-            { num: 14, sym: "Si", name: "Silicon", group: "metalloid", col: 14, row: 3 },
-            { num: 15, sym: "P", name: "Phosphorus", group: "nonmetal", col: 15, row: 3 },
-            { num: 16, sym: "S", name: "Sulfur", group: "nonmetal", col: 16, row: 3 },
-            { num: 17, sym: "Cl", name: "Chlorine", group: "halogen", col: 17, row: 3 },
-            { num: 18, sym: "Ar", name: "Argon", group: "noble", col: 18, row: 3 },
-            { num: 19, sym: "K", name: "Potassium", group: "alkali", col: 1, row: 4 },
-            { num: 20, sym: "Ca", name: "Calcium", group: "alkaline", col: 2, row: 4 },
-            { num: 21, sym: "Sc", name: "Scandium", group: "transition", col: 3, row: 4 },
-            { num: 22, sym: "Ti", name: "Titanium", group: "transition", col: 4, row: 4 },
-            { num: 26, sym: "Fe", name: "Iron", group: "transition", col: 8, row: 4 },
-            { num: 29, sym: "Cu", name: "Copper", group: "transition", col: 11, row: 4 },
-            { num: 30, sym: "Zn", name: "Zinc", group: "transition", col: 12, row: 4 },
-            { num: 32, sym: "Ge", name: "Germanium", group: "metalloid", col: 14, row: 4 },
-            { num: 35, sym: "Br", name: "Bromine", group: "halogen", col: 17, row: 4 },
-            { num: 36, sym: "Kr", name: "Krypton", group: "noble", col: 18, row: 4 },
-            { num: 79, sym: "Au", name: "Gold", group: "transition", col: 11, row: 6 },
-            { num: 82, sym: "Pb", name: "Lead", group: "post-transition", col: 14, row: 6 },
-            { num: 92, sym: "U", name: "Uranium", group: "actinide", col: 6, row: 9 }
+        // 3. Complete 118 Elements Compact Database Mapping
+        const elementMap = [
+            {num:1,sym:"H",name:"Hydrogen",group:"nonmetal",col:1,row:1,shells:[1]},
+            {num:2,sym:"He",name:"Helium",group:"noble",col:18,row:1,shells:[2]},
+            {num:3,sym:"Li",name:"Lithium",group:"alkali",col:1,row:2,shells:[2,1]},
+            {num:4,sym:"Be",name:"Beryllium",group:"alkaline",col:2,row:2,shells:[2,2]},
+            {num:5,sym:"B",name:"Boron",group:"metalloid",col:13,row:2,shells:[2,3]},
+            {num:6,sym:"C",name:"Carbon",group:"nonmetal",col:14,row:2,shells:[2,4]},
+            {num:7,sym:"N",name:"Nitrogen",group:"nonmetal",col:15,row:2,shells:[2,5]},
+            {num:8,sym:"O",name:"Oxygen",group:"nonmetal",col:16,row:2,shells:[2,6]},
+            {num:9,sym:"F",name:"Fluorine",group:"halogen",col:17,row:2,shells:[2,7]},
+            {num:10,sym:"Ne",name:"Neon",group:"noble",col:18,row:2,shells:[2,8]},
+            {num:11,sym:"Na",name:"Sodium",group:"alkali",col:1,row:3,shells:[2,8,1]},
+            {num:12,sym:"Mg",name:"Magnesium",group:"alkaline",col:2,row:3,shells:[2,8,2]},
+            {num:13,sym:"Al",name:"Aluminium",group:"post-transition",col:13,row:3,shells:[2,8,3]},
+            {num:14,sym:"Si",name:"Silicon",group:"metalloid",col:14,row:3,shells:[2,8,4]},
+            {num:15,sym:"P",name:"Phosphorus",group:"nonmetal",col:15,row:3,shells:[2,8,5]},
+            {num:16,sym:"S",name:"Sulfur",group:"nonmetal",col:16,row:3,shells:[2,8,6]},
+            {num:17,sym:"Cl",name:"Chlorine",group:"halogen",col:17,row:3,shells:[2,8,7]},
+            {num:18,sym:"Ar",name:"Argon",group:"noble",col:18,row:3,shells:[2,8,8]},
+            {num:19,sym:"K",name:"Potassium",group:"alkali",col:1,row:4,shells:[2,8,8,1]},
+            {num:20,sym:"Ca",name:"Calcium",group:"alkaline",col:2,row:4,shells:[2,8,8,2]},
+            {num:21,sym:"Sc",name:"Scandium",group:"transition",col:3,row:4,shells:[2,8,9,2]},
+            {num:22,sym:"Ti",name:"Titanium",group:"transition",col:4,row:4,shells:[2,8,10,2]},
+            {num:23,sym:"V",name:"Vanadium",group:"transition",col:5,row:4,shells:[2,8,11,2]},
+            {num:24,sym:"Cr",name:"Chromium",group:"transition",col:6,row:4,shells:[2,8,13,1]},
+            {num:25,sym:"Mn",name:"Manganese",group:"transition",col:7,row:4,shells:[2,8,13,2]},
+            {num:26,sym:"Fe",name:"Iron",group:"transition",col:8,row:4,shells:[2,8,14,2]},
+            {num:27,sym:"Co",name:"Cobalt",group:"transition",col:9,row:4,shells:[2,8,15,2]},
+            {num:28,sym:"Ni",name:"Nickel",group:"transition",col:10,row:4,shells:[2,8,16,2]},
+            {num:29,sym:"Cu",name:"Copper",group:"transition",col:11,row:4,shells:[2,8,18,1]},
+            {num:30,sym:"Zn",name:"Zinc",group:"transition",col:12,row:4,shells:[2,8,18,2]},
+            {num:31,sym:"Ga",name:"Gallium",group:"post-transition",col:13,row:4,shells:[2,8,18,3]},
+            {num:32,sym:"Ge",name:"Germanium",group:"metalloid",col:14,row:4,shells:[2,8,18,4]},
+            {num:33,sym:"As",name:"Arsenic",group:"metalloid",col:15,row:4,shells:[2,8,18,5]},
+            {num:34,sym:"Se",name:"Selenium",group:"nonmetal",col:16,row:4,shells:[2,8,18,6]},
+            {num:35,sym:"Br",name:"Bromine",group:"halogen",col:17,row:4,shells:[2,8,18,7]},
+            {num:36,sym:"Kr",name:"Krypton",group:"noble",col:18,row:4,shells:[2,8,18,8]},
+            {num:37,sym:"Rb",name:"Rubidium",group:"alkali",col:1,row:5,shells:[2,8,18,8,1]},
+            {num:38,sym:"Sr",name:"Strontium",group:"alkaline",col:2,row:5,shells:[2,8,18,8,2]},
+            {num:39,sym:"Y",name:"Yttrium",group:"transition",col:3,row:5,shells:[2,8,18,9,2]},
+            {num:40,sym:"Zr",name:"Zirconium",group:"transition",col:4,row:5,shells:[2,8,18,10,2]},
+            {num:41,sym:"Nb",name:"Niobium",group:"transition",col:5,row:5,shells:[2,8,18,12,1]},
+            {num:42,sym:"Mo",name:"Molybdenum",group:"transition",col:6,row:5,shells:[2,8,18,13,1]},
+            {num:43,sym:"Tc",name:"Technetium",group:"transition",col:7,row:5,shells:[2,8,18,13,2]},
+            {num:44,sym:"Ru",name:"Ruthenium",group:"transition",col:8,row:5,shells:[2,8,18,15,1]},
+            {num:45,sym:"Rh",name:"Rhodium",group:"transition",col:9,row:5,shells:[2,8,18,16,1]},
+            {num:46,sym:"Pd",name:"Palladium",group:"transition",col:10,row:5,shells:[2,8,18,18]},
+            {num:47,sym:"Ag",name:"Silver",group:"transition",col:11,row:5,shells:[2,8,18,18,1]},
+            {num:48,sym:"Cd",name:"Cadmium",group:"transition",col:12,row:5,shells:[2,8,18,18,2]},
+            {num:49,sym:"In",name:"Indium",group:"post-transition",col:13,row:5,shells:[2,8,18,18,3]},
+            {num:50,sym:"Sn",name:"Tin",group:"post-transition",col:14,row:5,shells:[2,8,18,18,4]},
+            {num:51,sym:"Sb",name:"Antimony",group:"metalloid",col:15,row:5,shells:[2,8,18,18,5]},
+            {num:52,sym:"Te",name:"Tellurium",group:"metalloid",col:16,row:5,shells:[2,8,18,18,6]},
+            {num:53,sym:"I",name:"Iodine",group:"halogen",col:17,row:5,shells:[2,8,18,18,7]},
+            {num:54,sym:"Xe",name:"Xenon",group:"noble",col:18,row:5,shells:[2,8,18,18,8]},
+            {num:55,sym:"Cs",name:"Caesium",group:"alkali",col:1,row:6,shells:[2,8,18,18,8,1]},
+            {num:56,sym:"Ba",name:"Barium",group:"alkaline",col:2,row:6,shells:[2,8,18,18,8,2]},
+            // Lanthanides row mapping coordinates inside main flow layout boundary gaps
+            {num:57,sym:"La",name:"Lanthanum",group:"lanthanide",col:3,row:9,shells:[2,8,18,18,9,2]},
+            {num:58,sym:"Ce",name:"Cerium",group:"lanthanide",col:4,row:9,shells:[2,8,18,19,9,2]},
+            {num:59,sym:"Pr",name:"Praseodymium",group:"lanthanide",col:5,row:9,shells:[2,8,18,21,8,2]},
+            {num:60,sym:"Nd",name:"Neodymium",group:"lanthanide",col:6,row:9,shells:[2,8,18,22,8,2]},
+            {num:61,sym:"Pm",name:"Promethium",group:"lanthanide",col:7,row:9,shells:[2,8,18,23,8,2]},
+            {num:62,sym:"Sm",name:"Samarium",group:"lanthanide",col:8,row:9,shells:[2,8,18,24,8,2]},
+            {num:63,sym:"Eu",name:"Europium",group:"lanthanide",col:9,row:9,shells:[2,8,18,25,8,2]},
+            {num:64,sym:"Gd",name:"Gadolinium",group:"lanthanide",col:10,row:9,shells:[2,8,18,25,9,2]},
+            {num:65,sym:"Tb",name:"Terbium",group:"lanthanide",col:11,row:9,shells:[2,8,18,27,8,2]},
+            {num:66,sym:"Dy",name:"Dysprosium",group:"lanthanide",col:12,row:9,shells:[2,8,18,28,8,2]},
+            {num:67,sym:"Ho",name:"Holmium",group:"lanthanide",col:13,row:9,shells:[2,8,18,29,8,2]},
+            {num:68,sym:"Er",name:"Erbium",group:"lanthanide",col:14,row:9,shells:[2,8,18,30,8,2]},
+            {num:69,sym:"Tm",name:"Thulium",group:"lanthanide",col:15,row:9,shells:[2,8,18,31,8,2]},
+            {num:70,sym:"Yb",name:"Ytterbium",group:"lanthanide",col:16,row:9,shells:[2,8,18,32,8,2]},
+            {num:71,sym:"Lu",name:"Lutetium",group:"lanthanide",col:17,row:9,shells:[2,8,18,32,9,2]},
+            {num:72,sym:"Hf",name:"Hafnium",group:"transition",col:4,row:6,shells:[2,8,18,32,10,2]},
+            {num:73,sym:"Ta",name:"Tantalum",group:"transition",col:5,row:6,shells:[2,8,18,32,11,2]},
+            {num:74,sym:"W",name:"Tungsten",group:"transition",col:6,row:6,shells:[2,8,18,32,12,2]},
+            {num:75,sym:"Re",name:"Rhenium",group:"transition",col:7,row:6,shells:[2,8,18,32,13,2]},
+            {num:76,sym:"Os",name:"Osmium",group:"transition",col:8,row:6,shells:[2,8,18,32,14,2]},
+            {num:77,sym:"Ir",name:"Iridium",group:"transition",col:9,row:6,shells:[2,8,18,32,15,2]},
+            {num:78,sym:"Pt",name:"Platinum",group:"transition",col:10,row:6,shells:[2,8,18,32,17,1]},
+            {num:79,sym:"Au",name:"Gold",group:"transition",col:11,row:6,shells:[2,8,18,32,18,1]},
+            {num:80,sym:"Hg",name:"Mercury",group:"transition",col:12,row:6,shells:[2,8,18,32,18,2]},
+            {num:81,sym:"Tl",name:"Thallium",group:"post-transition",col:13,row:6,shells:[2,8,18,32,18,3]},
+            {num:82,sym:"Pb",name:"Lead",group:"post-transition",col:14,row:6,shells:[2,8,18,32,18,4]},
+            {num:83,sym:"Bi",name:"Bismuth",group:"post-transition",col:15,row:6,shells:[2,8,18,32,18,5]},
+            {num:84,sym:"Po",name:"Polonium",group:"metalloid",col:16,row:6,shells:[2,8,18,32,18,6]},
+            {num:85,sym:"At",name:"Astatine",group:"metalloid",col:17,row:6,shells:[2,8,18,32,18,7]},
+            {num:86,sym:"Rn",name:"Radon",group:"noble",col:18,row:6,shells:[2,8,18,32,18,8]},
+            {num:87,sym:"Fr",name:"Francium",group:"alkali",col:1,row:7,shells:[2,8,18,32,18,8,1]},
+            {num:88,sym:"Ra",name:"Radium",group:"alkaline",col:2,row:7,shells:[2,8,18,32,18,8,2]},
+            // Actinides row grouping layout configuration mapping elements
+            {num:89,sym:"Ac",name:"Actinium",group:"actinide",col:3,row:10,shells:[2,8,18,32,18,9,2]},
+            {num:90,sym:"Th",name:"Thorium",group:"actinide",col:4,row:10,shells:[2,8,18,32,18,10,2]},
+            {num:91,sym:"Pa",name:"Protactinium",group:"actinide",col:5,row:10,shells:[2,8,18,32,20,9,2]},
+            {num:92,sym:"U",name:"Uranium",group:"actinide",col:6,row:10,shells:[2,8,18,32,22,9,2]},
+            {num:93,sym:"Np",name:"Neptunium",group:"actinide",col:7,row:10,shells:[2,8,18,32,22,9,2]},
+            {num:94,sym:"Pu",name:"Plutonium",group:"actinide",col:8,row:10,shells:[2,8,18,32,24,8,2]},
+            {num:95,sym:"Am",name:"Americium",group:"actinide",col:9,row:10,shells:[2,8,18,32,25,8,2]},
+            {num:96,sym:"Cm",name:"Curium",group:"actinide",col:10,row:10,shells:[2,8,18,32,25,9,2]},
+            {num:97,sym:"Bk",name:"Berkelium",group:"actinide",col:11,row:10,shells:[2,8,18,32,27,8,2]},
+            {num:98,sym:"Cf",name:"Californium",group:"actinide",col:12,row:10,shells:[2,8,18,32,28,8,2]},
+            {num:99,sym:"Es",name:"Einsteinium",group:"actinide",col:13,row:10,shells:[2,8,18,32,29,8,2]},
+            {num:100,sym:"Fm",name:"Fermium",group:"actinide",col:14,row:10,shells:[2,8,18,32,30,8,2]},
+            {num:101,sym:"Md",name:"Mendelevium",group:"actinide",col:15,row:10,shells:[2,8,18,32,31,8,2]},
+            {num:102,sym:"No",name:"Nobelium",group:"actinide",col:16,row:10,shells:[2,8,18,32,32,8,2]},
+            {num:103,sym:"Lr",name:"Lawrencium",group:"actinide",col:17,row:10,shells:[2,8,18,32,32,9,2]},
+            {num:104,sym:"Rf",name:"Rutherfordium",group:"transition",col:4,row:7,shells:[2,8,18,32,32,10,2]},
+            {num:105,sym:"Db",name:"Dubnium",group:"transition",col:5,row:7,shells:[2,8,18,32,32,11,2]},
+            {num:106,sym:"Sg",name:"Seaborgium",group:"transition",col:6,row:7,shells:[2,8,18,32,32,12,2]},
+            {num:107,sym:"Bh",name:"Bohrium",group:"transition",col:7,row:7,shells:[2,8,18,32,32,13,2]},
+            {num:108,sym:"Hs",name:"Hassium",group:"transition",col:8,row:7,shells:[2,8,18,32,32,14,2]},
+            {num:109,sym:"Mt",name:"Meitnerium",group:"unknown",col:9,row:7,shells:[2,8,18,32,32,15,2]},
+            {num:110,sym:"Ds",name:"Darmstadtium",group:"unknown",col:10,row:7,shells:[2,8,18,32,32,16,2]},
+            {num:111,sym:"Rg",name:"Roentgenium",group:"unknown",col:11,row:7,shells:[2,8,18,32,32,17,2]},
+            {num:112,sym:"Cn",name:"Copernium",group:"transition",col:12,row:7,shells:[2,8,18,32,32,18,2]},
+            {num:113,sym:"Nh",name:"Nihonium",group:"unknown",col:13,row:7,shells:[2,8,18,32,32,18,3]},
+            {num:114,sym:"Fl",name:"Flerovium",group:"unknown",col:14,row:7,shells:[2,8,18,32,32,18,4]},
+            {num:115,sym:"Mc",name:"Moscovium",group:"unknown",col:15,row:7,shells:[2,8,18,32,32,18,5]},
+            {num:116,sym:"Lv",name:"Livermorium",group:"unknown",col:16,row:7,shells:[2,8,18,32,32,18,6]},
+            {num:117,sym:"Ts",name:"Tennessine",group:"unknown",col:17,row:7,shells:[2,8,18,32,32,18,7]},
+            {num:118,sym:"Og",name:"Oganesson",group:"unknown",col:18,row:7,shells:[2,8,18,32,32,18,8]}
         ];
 
         function renderPeriodicTable() {
             const tableContainer = document.getElementById('periodic-table');
             const fragment = document.createDocumentFragment();
 
-            elementsData.forEach(elem => {
+            elementMap.forEach(elem => {
                 const elementCard = document.createElement('div');
                 elementCard.className = `element-card group-${elem.group}`;
                 elementCard.style.gridColumn = elem.col;
@@ -180,14 +280,107 @@
                     <span class="symbol">${elem.sym}</span>
                     <span class="name">${elem.name}</span>
                 `;
-                
+
+                elementCard.addEventListener('click', () => openAtomicVisualizer(elem));
                 fragment.appendChild(elementCard);
             });
 
             tableContainer.appendChild(fragment);
         }
+
+        // 4. Quantum Canvas Orbital Animation Engine
+        let animationFrameId = null;
+        const canvas = document.getElementById('atom-canvas');
+        const ctx = canvas.getContext('2d');
         
-        // Execute structural rendering
+        function openAtomicVisualizer(element) {
+            document.getElementById('modal-element-name').innerText = `${element.name} (${element.sym})`;
+            document.getElementById('modal-atomic-number').innerText = element.num;
+            document.getElementById('modal-group').innerText = element.group.toUpperCase();
+            document.getElementById('modal-shells').innerText = element.shells.join(' - ');
+
+            const modal = document.getElementById('atomic-modal');
+            modal.classList.add('active');
+            
+            // Start Canvas Animation Loop
+            if(animationFrameId) cancelAnimationFrame(animationFrameId);
+            
+            let angle = 0;
+            const shellCount = element.shells.length;
+            
+            // Resolve accent colors dynamically out from document system setup values
+            const accentColor = getComputedStyle(document.documentElement).getPropertyValue('--accent-color').trim() || '#ffffff';
+
+            function drawAtom() {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                const cx = canvas.width / 2;
+                const cy = canvas.height / 2;
+
+                // Draw Core Nucleus
+                ctx.beginPath();
+                ctx.arc(cx, cy, 18, 0, Math.PI * 2);
+                ctx.fillStyle = accentColor;
+                ctx.shadowBlur = 15;
+                ctx.shadowColor = accentColor;
+                ctx.fill();
+                ctx.shadowBlur = 0; // Reset canvas glow buffer state
+
+                // Render Nucleus Center Label text
+                ctx.fillStyle = document.documentElement.getAttribute('data-theme') === 'morning' ? '#1c2d37' : '#ffffff';
+                ctx.font = 'bold 10px Segoe UI';
+                ctx.textAlign = 'center';
+                ctx.textBaseline = 'middle';
+                ctx.fillText(`${element.sym}`, cx, cy);
+
+                // Draw Electron Shell Tracks and Particles
+                for (let i = 0; i < shellCount; i++) {
+                    const radius = 45 + (i * 22);
+                    const electronCount = element.shells[i];
+
+                    // Draw track path
+                    ctx.beginPath();
+                    ctx.arc(cx, cy, radius, 0, Math.PI * 2);
+                    ctx.strokeStyle = 'rgba(255, 255, 255, 0.08)';
+                    if(document.documentElement.getAttribute('data-theme') === 'morning') {
+                        ctx.strokeStyle = 'rgba(0, 0, 0, 0.06)';
+                    }
+                    ctx.lineWidth = 1;
+                    ctx.stroke();
+
+                    // Track calculations for spacing electrons perfectly along orbital circumference
+                    for (let j = 0; j < electronCount; j++) {
+                        // Alternate directions of rotation based on shell index parity
+                        const directionMultiplier = i % 2 === 0 ? 1 : -1;
+                        const localAngle = (angle * directionMultiplier * (1.2 / (i + 1))) + (j * (Math.PI * 2 / electronCount));
+                        
+                        const ex = cx + Math.cos(localAngle) * radius;
+                        const ey = cy + Math.sin(localAngle) * radius;
+
+                        ctx.beginPath();
+                        ctx.arc(ex, ey, 4.5, 0, Math.PI * 2);
+                        ctx.fillStyle = accentColor;
+                        ctx.fill();
+                    }
+                }
+
+                angle += 0.015;
+                animationFrameId = requestAnimationFrame(drawAtom);
+            }
+            
+            drawAtom();
+        }
+
+        function closeModal() {
+            document.getElementById('atomic-modal').classList.remove('active');
+            if(animationFrameId) cancelAnimationFrame(animationFrameId);
+        }
+
+        // Close modal if overlay is clicked directly
+        document.getElementById('atomic-modal').addEventListener('click', function(e) {
+            if (e.target === this) closeModal();
+        });
+
+        // Initialize grid on run
         renderPeriodicTable();
     </script>
 </body>
