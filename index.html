@@ -3,13 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Luma Mental Health</title>
+    <title>Luma Periodic Table Visualizer</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
     <header>
-        <div class="logo">Luma Mental Health</div>
+        <div class="logo">Luma Element Visualizer</div>
         <div class="theme-controls">
             <button class="theme-btn" onclick="setTheme('morning', this)" title="Morning">
                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"></path></svg>
@@ -40,17 +40,16 @@
         
         <div class="parallax-layer" id="layer-mountain-back"></div>
         <div class="parallax-layer" id="layer-mountain-mid"></div>
-        <h1 class="hero-title" id="main-title">Find Your Calm</h1>
+        <h1 class="hero-title" id="main-title">Elemental Spaces</h1>
         <div class="parallax-layer" id="layer-mountain-front"></div>
     </div>
 
     <section class="app-content-section">
-        <div class="container">
-            <h2>Your Sanctuary Awaits</h2>
-            <p>Experience a fluid UI scenery built around lightweight parallax layers and real-time environmental theme switching.</p>
-            <div class="placeholder-box">
-                [ Main Mental Health App Module Interface Area ]
-            </div>
+        <div class="container table-container">
+            <h2>Interactive Periodic Table</h2>
+            <p>Explore the architecture of matter inside a reactive, hardware-accelerated grid optimized for all environmental shifts.</p>
+            
+            <div class="periodic-table-grid" id="periodic-table"></div>
         </div>
     </section>
 
@@ -130,6 +129,66 @@
             buttons.forEach(btn => btn.classList.remove('active'));
             element.classList.add('active');
         }
+
+        // 5. High-Performance Element Grid Builder
+        const elementsData = [
+            { num: 1, sym: "H", name: "Hydrogen", group: "nonmetal", col: 1, row: 1 },
+            { num: 2, sym: "He", name: "Helium", group: "noble", col: 18, row: 1 },
+            { num: 3, sym: "Li", name: "Lithium", group: "alkali", col: 1, row: 2 },
+            { num: 4, sym: "Be", name: "Beryllium", group: "alkaline", col: 2, row: 2 },
+            { num: 5, sym: "B", name: "Boron", group: "metalloid", col: 13, row: 2 },
+            { num: 6, sym: "C", name: "Carbon", group: "nonmetal", col: 14, row: 2 },
+            { num: 7, sym: "N", name: "Nitrogen", group: "nonmetal", col: 15, row: 2 },
+            { num: 8, sym: "O", name: "Oxygen", group: "nonmetal", col: 16, row: 2 },
+            { num: 9, sym: "F", name: "Fluorine", group: "halogen", col: 17, row: 2 },
+            { num: 10, sym: "Ne", name: "Neon", group: "noble", col: 18, row: 2 },
+            { num: 11, sym: "Na", name: "Sodium", group: "alk alkali", col: 1, row: 3 },
+            { num: 12, sym: "Mg", name: "Magnesium", group: "alkaline", col: 2, row: 3 },
+            { num: 13, sym: "Al", name: "Aluminium", group: "post-transition", col: 13, row: 3 },
+            { num: 14, sym: "Si", name: "Silicon", group: "metalloid", col: 14, row: 3 },
+            { num: 15, sym: "P", name: "Phosphorus", group: "nonmetal", col: 15, row: 3 },
+            { num: 16, sym: "S", name: "Sulfur", group: "nonmetal", col: 16, row: 3 },
+            { num: 17, sym: "Cl", name: "Chlorine", group: "halogen", col: 17, row: 3 },
+            { num: 18, sym: "Ar", name: "Argon", group: "noble", col: 18, row: 3 },
+            { num: 19, sym: "K", name: "Potassium", group: "alkali", col: 1, row: 4 },
+            { num: 20, sym: "Ca", name: "Calcium", group: "alkaline", col: 2, row: 4 },
+            { num: 21, sym: "Sc", name: "Scandium", group: "transition", col: 3, row: 4 },
+            { num: 22, sym: "Ti", name: "Titanium", group: "transition", col: 4, row: 4 },
+            { num: 26, sym: "Fe", name: "Iron", group: "transition", col: 8, row: 4 },
+            { num: 29, sym: "Cu", name: "Copper", group: "transition", col: 11, row: 4 },
+            { num: 30, sym: "Zn", name: "Zinc", group: "transition", col: 12, row: 4 },
+            { num: 32, sym: "Ge", name: "Germanium", group: "metalloid", col: 14, row: 4 },
+            { num: 35, sym: "Br", name: "Bromine", group: "halogen", col: 17, row: 4 },
+            { num: 36, sym: "Kr", name: "Krypton", group: "noble", col: 18, row: 4 },
+            { num: 79, sym: "Au", name: "Gold", group: "transition", col: 11, row: 6 },
+            { num: 82, sym: "Pb", name: "Lead", group: "post-transition", col: 14, row: 6 },
+            { num: 92, sym: "U", name: "Uranium", group: "actinide", col: 6, row: 9 }
+        ];
+
+        function renderPeriodicTable() {
+            const tableContainer = document.getElementById('periodic-table');
+            const fragment = document.createDocumentFragment();
+
+            elementsData.forEach(elem => {
+                const elementCard = document.createElement('div');
+                elementCard.className = `element-card group-${elem.group}`;
+                elementCard.style.gridColumn = elem.col;
+                elementCard.style.gridRow = elem.row;
+                
+                elementCard.innerHTML = `
+                    <span class="atomic-number">${elem.num}</span>
+                    <span class="symbol">${elem.sym}</span>
+                    <span class="name">${elem.name}</span>
+                `;
+                
+                fragment.appendChild(elementCard);
+            });
+
+            tableContainer.appendChild(fragment);
+        }
+        
+        // Execute structural rendering
+        renderPeriodicTable();
     </script>
 </body>
 </html>
